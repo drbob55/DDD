@@ -20,12 +20,15 @@ model User {
   email        String   @unique
   password     String?  // Optional if using OAuth
   role         Role
+  confirmed    Boolean  @default(false)   // <--- add this
+  confirmationToken String?               // <--- and this
   casesAsPatient   Case[]   @relation("PatientCases")
   casesAsDentist   Case[]   @relation("DentistCases")
   casesAsReviewer  Case[]   @relation("ReviewerCases")
   appointments Appointment[]
   createdAt    DateTime @default(now())
 }
+
 
 model Case {
   id           String   @id @default(cuid())

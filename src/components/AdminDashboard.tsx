@@ -5,8 +5,8 @@ export default function AdminDashboard({ user }: { user: any }) {
         <h2 className="text-3xl font-bold mb-4 text-blue-700">Welcome, Admin {user.name}!</h2>
         <p className="text-gray-600 mb-4">This is your admin dashboard.</p>
         <ul className="mb-6 text-left">
-          <li>• View all cases and users</li>
-          <li>• Troubleshoot and audit</li>
+          <li>â€¢ View all cases and users</li>
+          <li>â€¢ Troubleshoot and audit</li>
         </ul>
         <p>Feature: User/case management coming soon.</p>
       </div>
