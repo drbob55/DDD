@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
+import Appointments from "./Appointments"; // <--- IMPORT ADDED
 
 type Case = {
     id: string;
@@ -54,51 +55,51 @@ export default function PatientDashboard({ user }: { user: any }) {
         }
     };
 
-    if (selectedCase) {
-        return (
-            <div className="flex flex-col items-center justify-center min-h-screen">
-                <div className="bg-white rounded-xl shadow p-8 w-full max-w-lg text-center">
-                    <h2 className="text-2xl font-bold mb-4 text-blue-700">Case Details</h2>
-                    <p className="mb-2"><b>Dentist:</b> Dr. {selectedCase.dentist.name}</p>
-                    <p className="mb-2"><b>Notes:</b> {selectedCase.notes}</p>
-                    {selectedCase.treatmentPlanUrl && (
-                        <p className="mb-2">
-                            <b>Treatment Plan:</b>{" "}
-                            <a href={selectedCase.treatmentPlanUrl} className="text-blue-700 underline" target="_blank" rel="noopener noreferrer">
-                                Download
-                            </a>
-                        </p>
-                    )}
-                    {error && <div className="text-red-500 mb-2">{error}</div>}
-                    {success && <div className="text-green-600 mb-2">{success}</div>}
-                    {selectedCase.status === "AWAITING_CONSENT" && (
-                        <div className="flex gap-4 justify-center mt-4">
-                            <button
-                                className="bg-green-600 text-white px-4 py-2 rounded"
-                                onClick={() => handleConsent(true)}
-                            >
-                                Consent
-                            </button>
-                            <button
-                                className="bg-red-600 text-white px-4 py-2 rounded"
-                                onClick={() => handleConsent(false)}
-                            >
-                                Decline
-                            </button>
-                        </div>
-                    )}
-                    <button
-                        className="mt-4 bg-gray-200 text-gray-700 px-4 py-2 rounded"
-                        onClick={() => setSelectedCase(null)}
-                    >
-                        Back
-                    </button>
-                </div>
-            </div>
-        );
-    }
+    return selectedCase ? (
+        <div className="flex flex-col items-center justify-center min-h-screen">
+            <div className="bg-white rounded-xl shadow p-8 w-full max-w-lg text-center">
+                <h2 className="text-2xl font-bold mb-4 text-blue-700">Case Details</h2>
+                <p className="mb-2"><b>Dentist:</b> Dr. {selectedCase.dentist.name}</p>
+                <p className="mb-2"><b>Notes:</b> {selectedCase.notes}</p>
+                {selectedCase.treatmentPlanUrl && (
+                    <p className="mb-2">
+                        <b>Treatment Plan:</b>{" "}
+                        <a href={selectedCase.treatmentPlanUrl} className="text-blue-700 underline" target="_blank" rel="noopener noreferrer">
+                            Download
+                        </a>
+                    </p>
+                )}
 
-    return (
+                {/* Appointments for this case */}
+                <Appointments caseId={selectedCase.id} userId={user.id} />
+
+                {error && <div className="text-red-500 mb-2">{error}</div>}
+                {success && <div className="text-green-600 mb-2">{success}</div>}
+                {selectedCase.status === "AWAITING_CONSENT" && (
+                    <div className="flex gap-4 justify-center mt-4">
+                        <button
+                            className="bg-green-600 text-white px-4 py-2 rounded"
+                            onClick={() => handleConsent(true)}
+                        >
+                            Consent
+                        </button>
+                        <button
+                            className="bg-red-600 text-white px-4 py-2 rounded"
+                            onClick={() => handleConsent(false)}
+                        >
+                            Decline
+                        </button>
+                    </div>
+                )}
+                <button
+                    className="mt-4 bg-gray-200 text-gray-700 px-4 py-2 rounded"
+                    onClick={() => setSelectedCase(null)}
+                >
+                    Back
+                </button>
+            </div>
+        </div>
+    ) : (
         <div className="flex flex-col items-center min-h-screen pt-10">
             <div className="bg-white rounded-xl shadow p-8 w-full max-w-3xl">
                 <h2 className="text-3xl font-bold mb-6 text-blue-700">Your Aligner Cases</h2>
