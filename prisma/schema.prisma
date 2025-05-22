@@ -1,10 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,36 +11,36 @@ datasource db {
 }
 
 model User {
-  id           String   @id @default(cuid())
-  name         String
-  email        String   @unique
-  password     String?  // Optional if using OAuth
-  role         Role
-  confirmed    Boolean  @default(false)   // <--- add this
-  confirmationToken String?               // <--- and this
-  casesAsPatient   Case[]   @relation("PatientCases")
-  casesAsDentist   Case[]   @relation("DentistCases")
-  casesAsReviewer  Case[]   @relation("ReviewerCases")
-  appointments Appointment[]
-  createdAt    DateTime @default(now())
+  id                String         @id @default(cuid())
+  name              String
+  email             String         @unique
+  password          String?        // Optional if using OAuth
+  role              Role
+  confirmed         Boolean        @default(false)
+  confirmationToken String?
+  casesAsPatient    Case[]         @relation("PatientCases")
+  casesAsDentist    Case[]         @relation("DentistCases")
+  casesAsReviewer   Case[]         @relation("ReviewerCases")
+  appointments      Appointment[]
+  notifications     Notification[] // <-- Add this relation
+  createdAt         DateTime       @default(now())
 }
 
-
 model Case {
-  id           String   @id @default(cuid())
-  patient      User     @relation("PatientCases", fields: [patientId], references: [id])
-  patientId    String
-  dentist      User     @relation("DentistCases", fields: [dentistId], references: [id])
-  dentistId    String
-  reviewer     User?    @relation("ReviewerCases", fields: [reviewerId], references: [id])
-  reviewerId   String?
-  scanFileUrl  String
+  id               String        @id @default(cuid())
+  patient          User          @relation("PatientCases", fields: [patientId], references: [id])
+  patientId        String
+  dentist          User          @relation("DentistCases", fields: [dentistId], references: [id])
+  dentistId        String
+  reviewer         User?         @relation("ReviewerCases", fields: [reviewerId], references: [id])
+  reviewerId       String?
+  scanFileUrl      String
   treatmentPlanUrl String?
-  status       CaseStatus
-  notes        String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-  appointments Appointment[]
+  status           CaseStatus
+  notes            String?
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  appointments     Appointment[]
 }
 
 model Appointment {
@@ -55,6 +51,15 @@ model Appointment {
   userId    String
   date      DateTime
   notes     String?
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
 }
 
 enum Role {

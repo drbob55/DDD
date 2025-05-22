@@ -19,11 +19,18 @@ export default function PatientDashboard({ user }: { user: any }) {
     const [selectedCase, setSelectedCase] = useState<Case | null>(null);
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [notifications, setNotifications] = useState<any[]>([]);
 
     useEffect(() => {
         fetch(`/api/cases?userId=${user.id}`)
             .then((res) => res.json())
             .then((data) => setCases(data.cases));
+    }, [user.id]);
+
+    useEffect(() => {
+        fetch(`/api/notifications?userId=${user.id}`)
+            .then((res) => res.json())
+            .then((data) => setNotifications(data.notifications || []));
     }, [user.id]);
 
     const handleConsent = async (consent: boolean) => {
@@ -95,6 +102,32 @@ export default function PatientDashboard({ user }: { user: any }) {
         <div className="flex flex-col items-center min-h-screen pt-10">
             <div className="bg-white rounded-xl shadow p-8 w-full max-w-3xl">
                 <h2 className="text-3xl font-bold mb-6 text-blue-700">Your Aligner Cases</h2>
+
+                {/* NOTIFICATIONS BLOCK */}
+                {notifications.length > 0 && (
+                    <div className="mb-6">
+                        {notifications.filter((n) => !n.read).map((n) => (
+                            <div key={n.id} className="bg-green-100 text-green-800 p-3 mb-2 rounded-xl shadow text-center">
+                                {n.message}
+                            </div>
+                        ))}
+                        <button
+                            className="text-xs text-gray-500 underline mt-1"
+                            onClick={async () => {
+                                await fetch("/api/notifications", {
+                                    method: "POST",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({ userId: user.id }),
+                                });
+                                setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+                            }}
+                        >
+                            Mark all as read
+                        </button>
+                    </div>
+                )}
+                {/* END NOTIFICATIONS BLOCK */}
+
                 {cases.length === 0 ? (
                     <p className="text-gray-500">No cases yet.</p>
                 ) : (

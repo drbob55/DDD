@@ -8,5 +8,18 @@ export async function POST(req: NextRequest, { params }: { params: { caseId: str
         where: { id: params.caseId },
         data: { status: "SHIPPED" },
     });
+
+    // Fetch patientId for this case
+    const theCase = await prisma.case.findUnique({ where: { id: params.caseId } });
+
+    if (theCase?.patientId) {
+        await prisma.notification.create({
+            data: {
+                userId: theCase.patientId,
+                message: "Your aligners are ready for pickup!",
+            },
+        });
+    }
+
     return NextResponse.json({ success: true, case: updatedCase });
 }
