@@ -9,14 +9,28 @@ import { authOptions } from "../auth/[...nextauth]/route"; // Adjust path as nee
 
 const prisma = new PrismaClient();
 
-// GET: /api/cases?userId=...
+// GET: /api/cases?status=IN_TREATMENT or /api/cases?userId=... or default to PENDING_REVIEW
 export async function GET(req: NextRequest) {
     try {
         const { searchParams } = new URL(req.url);
         const userId = searchParams.get("userId");
+        const status = searchParams.get("status");
 
+        // Priority 1: filter by status if provided
+        if (status) {
+            const cases = await prisma.case.findMany({
+                where: { status },
+                include: {
+                    patient: true,
+                    dentist: true,
+                },
+                orderBy: { createdAt: "desc" },
+            });
+            return NextResponse.json({ cases });
+        }
+
+        // Priority 2: filter by patient userId
         if (userId) {
-            // Return all cases for a specific patient
             const cases = await prisma.case.findMany({
                 where: { patientId: userId },
                 include: {
@@ -26,18 +40,18 @@ export async function GET(req: NextRequest) {
                 orderBy: { createdAt: "desc" },
             });
             return NextResponse.json({ cases });
-        } else {
-            // Return all cases pending review (for reviewer dashboard)
-            const cases = await prisma.case.findMany({
-                where: { status: "PENDING_REVIEW" },
-                include: {
-                    patient: true,
-                    dentist: true,
-                },
-                orderBy: { createdAt: "desc" },
-            });
-            return NextResponse.json({ cases });
         }
+
+        // Priority 3: fallback - all cases pending review (reviewer dashboard)
+        const cases = await prisma.case.findMany({
+            where: { status: "PENDING_REVIEW" },
+            include: {
+                patient: true,
+                dentist: true,
+            },
+            orderBy: { createdAt: "desc" },
+        });
+        return NextResponse.json({ cases });
     } catch (err: any) {
         console.error("API /api/cases GET error:", err);
         return NextResponse.json({ error: "Internal server error: " + err.message }, { status: 500 });
