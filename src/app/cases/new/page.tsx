@@ -48,7 +48,8 @@ export default function NewCase() {
         data.append("patientName", form.patientName);
         data.append("patientEmail", form.patientEmail);
         data.append("notes", form.notes);
-        data.append("dentistId", session.user.id);
+        // No dentistId sent!
+
         data.append("scanFile", form.scanFile);
 
         const res = await fetch("/api/cases", {
@@ -60,7 +61,13 @@ export default function NewCase() {
             setSuccess("Case submitted successfully!");
             setTimeout(() => router.push("/dashboard"), 1500);
         } else {
-            const body = await res.json();
+            // Robust error handling for empty/non-JSON responses
+            let body = { error: "Submission failed." };
+            try {
+                body = await res.json();
+            } catch (e) {
+                // Do nothing, body stays as fallback
+            }
             setError(body.error || "Submission failed.");
         }
     };
