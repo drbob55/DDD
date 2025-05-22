@@ -5,32 +5,49 @@ import path from "path";
 import { v4 as uuidv4 } from "uuid";
 import { promisify } from "util";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route"; // Make sure this path is correct
+import { authOptions } from "../auth/[...nextauth]/route"; // Adjust path as needed
 
 const prisma = new PrismaClient();
 
-// GET all pending cases for reviewer
+// GET: /api/cases?userId=...
 export async function GET(req: NextRequest) {
     try {
-        const cases = await prisma.case.findMany({
-            where: { status: "PENDING_REVIEW" },
-            include: {
-                patient: true,
-                dentist: true,
-            },
-            orderBy: { createdAt: "desc" },
-        });
-        return NextResponse.json({ cases });
+        const { searchParams } = new URL(req.url);
+        const userId = searchParams.get("userId");
+
+        if (userId) {
+            // Return all cases for a specific patient
+            const cases = await prisma.case.findMany({
+                where: { patientId: userId },
+                include: {
+                    dentist: true,
+                    reviewer: true,
+                },
+                orderBy: { createdAt: "desc" },
+            });
+            return NextResponse.json({ cases });
+        } else {
+            // Return all cases pending review (for reviewer dashboard)
+            const cases = await prisma.case.findMany({
+                where: { status: "PENDING_REVIEW" },
+                include: {
+                    patient: true,
+                    dentist: true,
+                },
+                orderBy: { createdAt: "desc" },
+            });
+            return NextResponse.json({ cases });
+        }
     } catch (err: any) {
         console.error("API /api/cases GET error:", err);
         return NextResponse.json({ error: "Internal server error: " + err.message }, { status: 500 });
     }
 }
 
-// POST: Create a new case and save scan file
+// POST: Create a new case and save scan file (Dentist only)
 export async function POST(req: NextRequest) {
     try {
-        // Get the session (logged-in user)
+        // Authenticate dentist
         const session = await getServerSession(authOptions);
 
         if (!session?.user || session.user.role !== "DENTIST") {
@@ -48,7 +65,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: "No scan file uploaded." }, { status: 400 });
         }
 
-        // Save file to /public/uploads/
+        // Ensure uploads directory exists
         const uploadDir = path.join(process.cwd(), "public", "uploads");
         if (!existsSync(uploadDir)) {
             mkdirSync(uploadDir, { recursive: true });
@@ -73,7 +90,7 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        // Double-check the dentist exists (should always be true, but for safety)
+        // Double-check the dentist exists
         const dentist = await prisma.user.findUnique({ where: { id: dentistId } });
         if (!dentist) {
             return NextResponse.json({ error: "Dentist does not exist." }, { status: 400 });
