@@ -1,84 +1,117 @@
-import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { hash } from "bcryptjs";
+// src/app/api/auth/register/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
-const prisma = new PrismaClient();
-
-function isStrongPassword(password: string) {
-  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/.test(password);
+// Generate random 6-digit verification code
+function generateVerificationCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-export async function POST(req: NextRequest) {
+// Generate 8-digit user ID
+function generateUserId(): string {
+  return Math.floor(10000000 + Math.random() * 90000000).toString();
+}
+
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json();
-    const { name, email, password, role } = body;
+    const body = await request.json();
+    console.log('Registration request body:', body);
+    
+    const { firstName, lastName, email, phone, password, role, verificationMethod } = body;
 
-    if (!name || !email || !password || !role) {
-      return NextResponse.json({ error: "Missing fields." }, { status: 400 });
-    }
-
-    if (!isStrongPassword(password)) {
+    // Validation
+    if (!firstName || !lastName || !email || !password) {
       return NextResponse.json(
-        { error: "Password must be at least 8 characters and include uppercase, lowercase, number, and special character." },
+        { error: 'First name, last name, email, and password are required' },
         { status: 400 }
       );
     }
 
-    // Check if email already registered
-    const existing = await prisma.user.findUnique({
-      where: { email },
-    });
-    if (existing) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { error: "Email already registered." },
+        { error: 'Password must be at least 8 characters' },
         { status: 400 }
       );
     }
 
-    // Example: Only allow one admin registration
-    if (role === "admin") {
-      const existingAdmin = await prisma.user.findFirst({
-        where: { role: "admin" },
-      });
-      if (existingAdmin) {
-        return NextResponse.json(
-          { error: "Admin account already exists." },
-          { status: 400 }
-        );
+    // Check if user already exists
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email },
+          ...(phone ? [{ phone }] : [])
+        ]
       }
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User with this email or phone already exists' },
+        { status: 409 }
+      );
     }
 
-    const hashedPassword = await hash(password, 10);
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Optionally set a 'confirmed' field to false for email confirmation
+    // Generate unique 8-digit user id
+    let uniqueId = generateUserId();
+    // Ensure uniqueness
+    while (await prisma.user.findUnique({ where: { id: uniqueId } })) {
+      uniqueId = generateUserId();
+    }
+
+    // Generate verification code
+    const confirmationToken = generateVerificationCode();
+
+    // Create user matching your schema
     const user = await prisma.user.create({
       data: {
-        name,
+        id: uniqueId, // Your schema uses 'id' not 'userId'
+        firstName,
+        lastName,
+        name: `${firstName} ${lastName}`,
         email,
         password: hashedPassword,
-        role,
-        confirmed: false, // <-- You need to add this to your Prisma schema!
-        confirmationToken: Math.random().toString(36).substring(2, 15), // For future email confirmation
-      },
+        phone: phone || null,
+        role: role || 'PATIENT',
+        sex: 'PREFER_NOT_TO_SAY', // Default value
+        dateOfBirth: new Date('2000-01-01'), // Default, should be collected properly
+        confirmed: false, // Your schema uses 'confirmed' not 'isVerified'
+        confirmationToken: confirmationToken, // Store for verification
+      }
     });
 
-    // TODO: Send confirmation email here (not included in this snippet)
+    console.log('User created successfully:', user.id);
+
+    // Send verification email/SMS based on verificationMethod
+    // TODO: Implement email/SMS sending logic here
+    if (verificationMethod === 'email' || verificationMethod === 'both') {
+      console.log(`Email verification code for ${email}: ${confirmationToken}`);
+    }
+    
+    if ((verificationMethod === 'phone' || verificationMethod === 'both') && phone) {
+      console.log(`Phone verification code for ${phone}: ${confirmationToken}`);
+    }
 
     return NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-      },
-      // confirmationRequired: true,
-      // confirmationUrl: `/confirm/${user.confirmationToken}`,
+      message: 'Registration successful. Please check your email/phone for verification code.',
+      userId: user.id,
+      verificationMethod
     });
-  } catch (error) {
-    console.error("❌ Registration API error:", error);
+  } catch (error: any) {
+    console.error('Registration error:', error);
+    console.error('Error details:', error.message);
+    if (error.code === 'P2002') {
+      return NextResponse.json(
+        { error: 'A user with this email or phone already exists' },
+        { status: 409 }
+      );
+    }
     return NextResponse.json(
-      { error: "Internal server error." },
+      { error: 'Internal server error', details: error.message },
       { status: 500 }
     );
   }

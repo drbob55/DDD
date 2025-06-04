@@ -1,6 +1,5 @@
+import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-const prisma = new PrismaClient();
 
 export async function POST(req: NextRequest, { params }: { params: { caseId: string } }) {
     // Mark case as shipped
@@ -8,10 +7,8 @@ export async function POST(req: NextRequest, { params }: { params: { caseId: str
         where: { id: params.caseId },
         data: { status: "SHIPPED" },
     });
-
     // Fetch patientId for this case
     const theCase = await prisma.case.findUnique({ where: { id: params.caseId } });
-
     if (theCase?.patientId) {
         await prisma.notification.create({
             data: {
@@ -20,6 +17,5 @@ export async function POST(req: NextRequest, { params }: { params: { caseId: str
             },
         });
     }
-
     return NextResponse.json({ success: true, case: updatedCase });
 }

@@ -1,55 +1,94 @@
 "use client";
-
 import { useState } from "react";
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 export default function Register() {
-  const [form, setForm] = useState({ name: "", email: "", password: "", role: "PATIENT" });
-  const [error, setError] = useState("");
-  const router = useRouter();
+  const [contact, setContact] = useState({ email: "", phone: "" });
+  const [step, setStep] = useState<"input" | "pending" | "done">("input");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  async function handleSubmit(e) {
     e.preventDefault();
-    setError("");
+    setLoading(true);
+    setMessage("");
+    // Basic validation
+    if (!contact.email && !contact.phone) {
+      setMessage("Please enter email or phone.");
+      setLoading(false);
+      return;
+    }
     const res = await fetch("/api/register", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(contact),
     });
-    if (res.ok) {
-      // Auto-login after registration
-      await signIn("credentials", {
-        redirect: false,
-        email: form.email,
-        password: form.password,
-      });
-      router.push("/dashboard");
+    const data = await res.json();
+    setLoading(false);
+    if (data.status === "registered") {
+      setStep("done");
+      setMessage("You are already registered. Please log in.");
+    } else if (data.status === "pending") {
+      setStep("pending");
+      setMessage("Account not yet activated. Invitation has been re-sent. Please check your email.");
+    } else if (data.status === "invited") {
+      setStep("pending");
+      setMessage("Invitation sent! Please check your email to finish registration.");
     } else {
-      const data = await res.json();
-      setError(data.error || "Registration failed.");
+      setMessage(data.error || "Something went wrong.");
     }
-  };
+  }
+
+  function handleChange(e) {
+    setContact({ ...contact, [e.target.name]: e.target.value });
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <form className="bg-white p-8 rounded-xl shadow-md w-full max-w-sm" onSubmit={handleSubmit}>
-        <h2 className="text-2xl font-bold mb-6 text-blue-700 text-center">Register</h2>
-        {error && <div className="text-red-500 mb-2">{error}</div>}
-        <input name="name" type="text" required placeholder="Full Name" value={form.name} onChange={handleChange} className="w-full mb-3 px-4 py-2 border rounded" />
-        <input name="email" type="email" required placeholder="Email" value={form.email} onChange={handleChange} className="w-full mb-3 px-4 py-2 border rounded" />
-        <input name="password" type="password" required placeholder="Password" value={form.password} onChange={handleChange} className="w-full mb-3 px-4 py-2 border rounded" />
-        <select name="role" value={form.role} onChange={handleChange} className="w-full mb-4 px-4 py-2 border rounded">
-          <option value="PATIENT">Patient</option>
-          <option value="DENTIST">Dentist</option>
-          <option value="REVIEWER">Reviewer</option>
-          <option value="MANUFACTURER">Manufacturer</option>
-        </select>
-        <button type="submit" className="w-full bg-blue-700 text-white font-bold py-2 rounded mt-2">Register</button>
+      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-xl shadow w-full max-w-sm">
+        <h2 className="text-2xl font-bold mb-4">Patient Registration</h2>
+        {message && <div className="mb-4 text-blue-700">{message}</div>}
+        {step === "input" && (
+          <>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={contact.email}
+              onChange={handleChange}
+              className="mb-3 px-4 py-2 border rounded w-full"
+            />
+            <input
+              type="tel"
+              name="phone"
+              placeholder="Phone (optional)"
+              value={contact.phone}
+              onChange={handleChange}
+              className="mb-3 px-4 py-2 border rounded w-full"
+            />
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded font-bold w-full"
+              disabled={loading}
+            >
+              {loading ? "Please wait..." : "Continue"}
+            </button>
+          </>
+        )}
+        {step === "pending" && (
+          <>
+            <button
+              type="button"
+              onClick={handleSubmit}
+              className="mt-2 text-blue-600 underline"
+              disabled={loading}
+            >
+              Resend Invitation
+            </button>
+          </>
+        )}
+        {step === "done" && (
+          <a href="/login" className="text-blue-700 underline">Go to Login</a>
+        )}
       </form>
     </div>
   );

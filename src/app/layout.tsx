@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import AuthSessionProvider from "../components/AuthSessionProvider"; // <-- IMPORT YOUR CLIENT PROVIDER
+import AuthSessionProvider from "../components/AuthSessionProvider";
+import { Toaster } from "react-hot-toast"; // <-- ADD THIS IMPORT
 
 const geistSans = Geist({
     variable: "--font-geist-sans",
@@ -28,7 +29,9 @@ export default function RootLayout({
             <body
                 className={`${geistSans.variable} ${geistMono.variable} antialiased`}
             >
-                <AuthSessionProvider> {/* CLIENT COMPONENT WRAPS EVERYTHING */}
+                <AuthSessionProvider>
+                    {/* Toast notifications for the whole app */}
+                    <Toaster position="top-right" reverseOrder={false} />
                     {children}
                 </AuthSessionProvider>
             </body>

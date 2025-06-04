@@ -1,0 +1,693 @@
+Folder PATH listing for volume Windows
+Volume serial number is 0834-A413
+C:.
+³   .env
+³   .gitignore
+³   eslint.config.mjs
+³   next-env.d.ts
+³   next.config.ts
+³   package-lock.json
+³   package.json
+³   postcss.config.mjs
+³   README.md
+³   structure.txt
+³   tsconfig.json
+³   
+ÃÄÄÄ.next
+³   ³   app-build-manifest.json
+³   ³   build-manifest.json
+³   ³   fallback-build-manifest.json
+³   ³   package.json
+³   ³   trace
+³   ³   transform.js
+³   ³   transform.js.map
+³   ³   
+³   ÃÄÄÄbuild
+³   ³   ÀÄÄÄchunks
+³   ³           node_modules_b5d1def4._.js
+³   ³           node_modules_b5d1def4._.js.map
+³   ³           postcss_config_mjs_transform_ts_f0ffbaad._.js
+³   ³           postcss_config_mjs_transform_ts_f0ffbaad._.js.map
+³   ³           [root-of-the-server]__04d7a048._.js
+³   ³           [root-of-the-server]__04d7a048._.js.map
+³   ³           [root-of-the-server]__05f88b00._.js
+³   ³           [root-of-the-server]__05f88b00._.js.map
+³   ³           [turbopack]_runtime.js
+³   ³           [turbopack]_runtime.js.map
+³   ³           
+³   ÃÄÄÄcache
+³   ³       .rscinfo
+³   ³       
+³   ÃÄÄÄserver
+³   ³   ³   app-paths-manifest.json
+³   ³   ³   interception-route-rewrite-manifest.js
+³   ³   ³   middleware-build-manifest.js
+³   ³   ³   middleware-manifest.json
+³   ³   ³   next-font-manifest.js
+³   ³   ³   next-font-manifest.json
+³   ³   ³   pages-manifest.json
+³   ³   ³   server-reference-manifest.js
+³   ³   ³   server-reference-manifest.json
+³   ³   ³   
+³   ³   ÃÄÄÄapp
+³   ³   ³   ³   page.js
+³   ³   ³   ³   page.js.map
+³   ³   ³   ³   page_client-reference-manifest.js
+³   ³   ³   ³   
+³   ³   ³   ÃÄÄÄapi
+³   ³   ³   ³   ÃÄÄÄappointments
+³   ³   ³   ³   ³   ³   route.js
+³   ³   ³   ³   ³   ³   route.js.map
+³   ³   ³   ³   ³   ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³   ³   
+³   ³   ³   ³   ³   ÀÄÄÄroute
+³   ³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³   ³           next-font-manifest.json
+³   ³   ³   ³   ³           react-loadable-manifest.json
+³   ³   ³   ³   ³           server-reference-manifest.json
+³   ³   ³   ³   ³           
+³   ³   ³   ³   ÃÄÄÄauth
+³   ³   ³   ³   ³   ÀÄÄÄ[...nextauth]
+³   ³   ³   ³   ³       ³   route.js
+³   ³   ³   ³   ³       ³   route.js.map
+³   ³   ³   ³   ³       ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³       ³   
+³   ³   ³   ³   ³       ÀÄÄÄroute
+³   ³   ³   ³   ³               app-build-manifest.json
+³   ³   ³   ³   ³               app-paths-manifest.json
+³   ³   ³   ³   ³               build-manifest.json
+³   ³   ³   ³   ³               next-font-manifest.json
+³   ³   ³   ³   ³               react-loadable-manifest.json
+³   ³   ³   ³   ³               server-reference-manifest.json
+³   ³   ³   ³   ³               
+³   ³   ³   ³   ÃÄÄÄcases
+³   ³   ³   ³   ³   ³   route.js
+³   ³   ³   ³   ³   ³   route.js.map
+³   ³   ³   ³   ³   ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³   ³   
+³   ³   ³   ³   ³   ÃÄÄÄroute
+³   ³   ³   ³   ³   ³       app-build-manifest.json
+³   ³   ³   ³   ³   ³       app-paths-manifest.json
+³   ³   ³   ³   ³   ³       build-manifest.json
+³   ³   ³   ³   ³   ³       next-font-manifest.json
+³   ³   ³   ³   ³   ³       react-loadable-manifest.json
+³   ³   ³   ³   ³   ³       server-reference-manifest.json
+³   ³   ³   ³   ³   ³       
+³   ³   ³   ³   ³   ÀÄÄÄ[caseId]
+³   ³   ³   ³   ³       ÃÄÄÄconsent
+³   ³   ³   ³   ³       ³   ³   route.js
+³   ³   ³   ³   ³       ³   ³   route.js.map
+³   ³   ³   ³   ³       ³   ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³       ³   ³   
+³   ³   ³   ³   ³       ³   ÀÄÄÄroute
+³   ³   ³   ³   ³       ³           app-build-manifest.json
+³   ³   ³   ³   ³       ³           app-paths-manifest.json
+³   ³   ³   ³   ³       ³           build-manifest.json
+³   ³   ³   ³   ³       ³           next-font-manifest.json
+³   ³   ³   ³   ³       ³           react-loadable-manifest.json
+³   ³   ³   ³   ³       ³           server-reference-manifest.json
+³   ³   ³   ³   ³       ³           
+³   ³   ³   ³   ³       ÃÄÄÄreview
+³   ³   ³   ³   ³       ³   ³   route.js
+³   ³   ³   ³   ³       ³   ³   route.js.map
+³   ³   ³   ³   ³       ³   ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³       ³   ³   
+³   ³   ³   ³   ³       ³   ÀÄÄÄroute
+³   ³   ³   ³   ³       ³           app-build-manifest.json
+³   ³   ³   ³   ³       ³           app-paths-manifest.json
+³   ³   ³   ³   ³       ³           build-manifest.json
+³   ³   ³   ³   ³       ³           next-font-manifest.json
+³   ³   ³   ³   ³       ³           react-loadable-manifest.json
+³   ³   ³   ³   ³       ³           server-reference-manifest.json
+³   ³   ³   ³   ³       ³           
+³   ³   ³   ³   ³       ÀÄÄÄship
+³   ³   ³   ³   ³           ³   route.js
+³   ³   ³   ³   ³           ³   route.js.map
+³   ³   ³   ³   ³           ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³           ³   
+³   ³   ³   ³   ³           ÀÄÄÄroute
+³   ³   ³   ³   ³                   app-build-manifest.json
+³   ³   ³   ³   ³                   app-paths-manifest.json
+³   ³   ³   ³   ³                   build-manifest.json
+³   ³   ³   ³   ³                   next-font-manifest.json
+³   ³   ³   ³   ³                   react-loadable-manifest.json
+³   ³   ³   ³   ³                   server-reference-manifest.json
+³   ³   ³   ³   ³                   
+³   ³   ³   ³   ÃÄÄÄnotifications
+³   ³   ³   ³   ³   ³   route.js
+³   ³   ³   ³   ³   ³   route.js.map
+³   ³   ³   ³   ³   ³   route_client-reference-manifest.js
+³   ³   ³   ³   ³   ³   
+³   ³   ³   ³   ³   ÀÄÄÄroute
+³   ³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³   ³           next-font-manifest.json
+³   ³   ³   ³   ³           react-loadable-manifest.json
+³   ³   ³   ³   ³           server-reference-manifest.json
+³   ³   ³   ³   ³           
+³   ³   ³   ³   ÀÄÄÄregister
+³   ³   ³   ³       ³   route.js
+³   ³   ³   ³       ³   route.js.map
+³   ³   ³   ³       ³   route_client-reference-manifest.js
+³   ³   ³   ³       ³   
+³   ³   ³   ³       ÀÄÄÄroute
+³   ³   ³   ³               app-build-manifest.json
+³   ³   ³   ³               app-paths-manifest.json
+³   ³   ³   ³               build-manifest.json
+³   ³   ³   ³               next-font-manifest.json
+³   ³   ³   ³               react-loadable-manifest.json
+³   ³   ³   ³               server-reference-manifest.json
+³   ³   ³   ³               
+³   ³   ³   ÃÄÄÄcases
+³   ³   ³   ³   ÀÄÄÄnew
+³   ³   ³   ³       ³   page.js
+³   ³   ³   ³       ³   page.js.map
+³   ³   ³   ³       ³   page_client-reference-manifest.js
+³   ³   ³   ³       ³   
+³   ³   ³   ³       ÀÄÄÄpage
+³   ³   ³   ³               app-build-manifest.json
+³   ³   ³   ³               app-paths-manifest.json
+³   ³   ³   ³               build-manifest.json
+³   ³   ³   ³               next-font-manifest.json
+³   ³   ³   ³               react-loadable-manifest.json
+³   ³   ³   ³               server-reference-manifest.json
+³   ³   ³   ³               
+³   ³   ³   ÃÄÄÄdashboard
+³   ³   ³   ³   ³   page.js
+³   ³   ³   ³   ³   page.js.map
+³   ³   ³   ³   ³   page_client-reference-manifest.js
+³   ³   ³   ³   ³   
+³   ³   ³   ³   ÀÄÄÄpage
+³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³           next-font-manifest.json
+³   ³   ³   ³           react-loadable-manifest.json
+³   ³   ³   ³           server-reference-manifest.json
+³   ³   ³   ³           
+³   ³   ³   ÃÄÄÄfavicon.ico
+³   ³   ³   ³   ³   route.js
+³   ³   ³   ³   ³   route.js.map
+³   ³   ³   ³   ³   
+³   ³   ³   ³   ÀÄÄÄroute
+³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³           
+³   ³   ³   ÃÄÄÄlogin
+³   ³   ³   ³   ³   page.js
+³   ³   ³   ³   ³   page.js.map
+³   ³   ³   ³   ³   page_client-reference-manifest.js
+³   ³   ³   ³   ³   
+³   ³   ³   ³   ÀÄÄÄpage
+³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³           next-font-manifest.json
+³   ³   ³   ³           react-loadable-manifest.json
+³   ³   ³   ³           server-reference-manifest.json
+³   ³   ³   ³           
+³   ³   ³   ÃÄÄÄpage
+³   ³   ³   ³       app-build-manifest.json
+³   ³   ³   ³       app-paths-manifest.json
+³   ³   ³   ³       build-manifest.json
+³   ³   ³   ³       next-font-manifest.json
+³   ³   ³   ³       react-loadable-manifest.json
+³   ³   ³   ³       server-reference-manifest.json
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄregister
+³   ³   ³   ³   ³   page.js
+³   ³   ³   ³   ³   page.js.map
+³   ³   ³   ³   ³   page_client-reference-manifest.js
+³   ³   ³   ³   ³   
+³   ³   ³   ³   ÀÄÄÄpage
+³   ³   ³   ³           app-build-manifest.json
+³   ³   ³   ³           app-paths-manifest.json
+³   ³   ³   ³           build-manifest.json
+³   ³   ³   ³           next-font-manifest.json
+³   ³   ³   ³           react-loadable-manifest.json
+³   ³   ³   ³           server-reference-manifest.json
+³   ³   ³   ³           
+³   ³   ³   ÀÄÄÄ_not-found
+³   ³   ³       ³   page.js
+³   ³   ³       ³   page.js.map
+³   ³   ³       ³   page_client-reference-manifest.js
+³   ³   ³       ³   
+³   ³   ³       ÀÄÄÄpage
+³   ³   ³               app-build-manifest.json
+³   ³   ³               app-paths-manifest.json
+³   ³   ³               build-manifest.json
+³   ³   ³               next-font-manifest.json
+³   ³   ³               react-loadable-manifest.json
+³   ³   ³               server-reference-manifest.json
+³   ³   ³               
+³   ³   ÃÄÄÄchunks
+³   ³   ³   ³   node_modules_126d4739._.js
+³   ³   ³   ³   node_modules_126d4739._.js.map
+³   ³   ³   ³   node_modules_20b10c87._.js
+³   ³   ³   ³   node_modules_20b10c87._.js.map
+³   ³   ³   ³   node_modules_80bcf518._.js
+³   ³   ³   ³   node_modules_80bcf518._.js.map
+³   ³   ³   ³   node_modules_c036d31f._.js
+³   ³   ³   ³   node_modules_c036d31f._.js.map
+³   ³   ³   ³   node_modules_df76e589._.js
+³   ³   ³   ³   node_modules_df76e589._.js.map
+³   ³   ³   ³   node_modules_fd3af885._.js
+³   ³   ³   ³   node_modules_fd3af885._.js.map
+³   ³   ³   ³   node_modules_jose_dist_node_cjs_b4a80197._.js
+³   ³   ³   ³   node_modules_jose_dist_node_cjs_b4a80197._.js.map
+³   ³   ³   ³   node_modules_next-auth_35ecac8a._.js
+³   ³   ³   ³   node_modules_next-auth_35ecac8a._.js.map
+³   ³   ³   ³   node_modules_next_12a8f11e._.js
+³   ³   ³   ³   node_modules_next_12a8f11e._.js.map
+³   ³   ³   ³   node_modules_next_229848ed._.js
+³   ³   ³   ³   node_modules_next_229848ed._.js.map
+³   ³   ³   ³   node_modules_next_58c6b3c8._.js
+³   ³   ³   ³   node_modules_next_58c6b3c8._.js.map
+³   ³   ³   ³   node_modules_next_6219eca7._.js
+³   ³   ³   ³   node_modules_next_6219eca7._.js.map
+³   ³   ³   ³   node_modules_next_6aa1beb4._.js
+³   ³   ³   ³   node_modules_next_6aa1beb4._.js.map
+³   ³   ³   ³   node_modules_next_dc81cdd2._.js
+³   ³   ³   ³   node_modules_next_dc81cdd2._.js.map
+³   ³   ³   ³   node_modules_next_fa046fe5._.js
+³   ³   ³   ³   node_modules_next_fa046fe5._.js.map
+³   ³   ³   ³   node_modules_openid-client_ef38b3be._.js
+³   ³   ³   ³   node_modules_openid-client_ef38b3be._.js.map
+³   ³   ³   ³   [root-of-the-server]__2370e704._.js
+³   ³   ³   ³   [root-of-the-server]__2370e704._.js.map
+³   ³   ³   ³   [root-of-the-server]__43ea21d8._.js
+³   ³   ³   ³   [root-of-the-server]__43ea21d8._.js.map
+³   ³   ³   ³   [root-of-the-server]__48b32c58._.js
+³   ³   ³   ³   [root-of-the-server]__48b32c58._.js.map
+³   ³   ³   ³   [root-of-the-server]__55096eba._.js
+³   ³   ³   ³   [root-of-the-server]__55096eba._.js.map
+³   ³   ³   ³   [root-of-the-server]__730cd9b8._.js
+³   ³   ³   ³   [root-of-the-server]__730cd9b8._.js.map
+³   ³   ³   ³   [root-of-the-server]__864abf3e._.js
+³   ³   ³   ³   [root-of-the-server]__864abf3e._.js.map
+³   ³   ³   ³   [root-of-the-server]__9932cb57._.js
+³   ³   ³   ³   [root-of-the-server]__9932cb57._.js.map
+³   ³   ³   ³   [root-of-the-server]__b0cbf960._.js
+³   ³   ³   ³   [root-of-the-server]__b0cbf960._.js.map
+³   ³   ³   ³   [root-of-the-server]__d15c1aa1._.js
+³   ³   ³   ³   [root-of-the-server]__d15c1aa1._.js.map
+³   ³   ³   ³   [root-of-the-server]__f194a759._.js
+³   ³   ³   ³   [root-of-the-server]__f194a759._.js.map
+³   ³   ³   ³   [root-of-the-server]__f6da909d._.js
+³   ³   ³   ³   [root-of-the-server]__f6da909d._.js.map
+³   ³   ³   ³   [turbopack]_runtime.js
+³   ³   ³   ³   [turbopack]_runtime.js.map
+³   ³   ³   ³   
+³   ³   ³   ÀÄÄÄssr
+³   ³   ³           node_modules_47f2d27d._.js
+³   ³   ³           node_modules_47f2d27d._.js.map
+³   ³   ³           node_modules_80d820df._.js
+³   ³   ³           node_modules_80d820df._.js.map
+³   ³   ³           node_modules_84bfc1e5._.js
+³   ³   ³           node_modules_84bfc1e5._.js.map
+³   ³   ³           node_modules_92f8238e._.js
+³   ³   ³           node_modules_92f8238e._.js.map
+³   ³   ³           node_modules_936f27e5._.js
+³   ³   ³           node_modules_936f27e5._.js.map
+³   ³   ³           node_modules_96715ba7._.js
+³   ³   ³           node_modules_96715ba7._.js.map
+³   ³   ³           node_modules_975fddf0._.js
+³   ³   ³           node_modules_975fddf0._.js.map
+³   ³   ³           node_modules_ad3e0e0e._.js
+³   ³   ³           node_modules_ad3e0e0e._.js.map
+³   ³   ³           node_modules_bf07e949._.js
+³   ³   ³           node_modules_bf07e949._.js.map
+³   ³   ³           node_modules_bf671b14._.js
+³   ³   ³           node_modules_bf671b14._.js.map
+³   ³   ³           node_modules_d5cbdcf1._.js
+³   ³   ³           node_modules_d5cbdcf1._.js.map
+³   ³   ³           node_modules_e9d6d862._.js
+³   ³   ³           node_modules_e9d6d862._.js.map
+³   ³   ³           node_modules_f8c03590._.js
+³   ³   ³           node_modules_f8c03590._.js.map
+³   ³   ³           node_modules_fe70c84b._.js
+³   ³   ³           node_modules_fe70c84b._.js.map
+³   ³   ³           node_modules_next_9babd674._.js
+³   ³   ³           node_modules_next_9babd674._.js.map
+³   ³   ³           node_modules_next_b1ccfa0f._.js
+³   ³   ³           node_modules_next_b1ccfa0f._.js.map
+³   ³   ³           node_modules_next_dist_0962b827._.js
+³   ³   ³           node_modules_next_dist_0962b827._.js.map
+³   ³   ³           node_modules_next_dist_a17f26a9._.js
+³   ³   ³           node_modules_next_dist_a17f26a9._.js.map
+³   ³   ³           node_modules_next_dist_client_components_forbidden-error_ea7ea172.js
+³   ³   ³           node_modules_next_dist_client_components_forbidden-error_ea7ea172.js.map
+³   ³   ³           node_modules_next_dist_client_components_unauthorized-error_c8949b27.js
+³   ³   ³           node_modules_next_dist_client_components_unauthorized-error_c8949b27.js.map
+³   ³   ³           src_app_a4430781._.js
+³   ³   ³           src_app_a4430781._.js.map
+³   ³   ³           src_app_cases_new_page_tsx_fdf58886._.js
+³   ³   ³           src_app_cases_new_page_tsx_fdf58886._.js.map
+³   ³   ³           src_app_login_page_tsx_b78dacb4._.js
+³   ³   ³           src_app_login_page_tsx_b78dacb4._.js.map
+³   ³   ³           src_app_register_page_tsx_ce4b0ce0._.js
+³   ³   ³           src_app_register_page_tsx_ce4b0ce0._.js.map
+³   ³   ³           src_components_1f1b03ce._.js
+³   ³   ³           src_components_1f1b03ce._.js.map
+³   ³   ³           src_components_39a85319._.js
+³   ³   ³           src_components_39a85319._.js.map
+³   ³   ³           src_components_425701ff._.js
+³   ³   ³           src_components_425701ff._.js.map
+³   ³   ³           src_components_74f4dd91._.js
+³   ³   ³           src_components_74f4dd91._.js.map
+³   ³   ³           src_components_d81cc745._.js
+³   ³   ³           src_components_d81cc745._.js.map
+³   ³   ³           src_components_ReviewerDashboard_tsx_82054c87._.js
+³   ³   ³           src_components_ReviewerDashboard_tsx_82054c87._.js.map
+³   ³   ³           [externals]_next_dist_compiled_next-server_app-page-turbo_runtime_dev_30fa57d5.js
+³   ³   ³           [externals]_next_dist_compiled_next-server_app-page-turbo_runtime_dev_30fa57d5.js.map
+³   ³   ³           [root-of-the-server]__0a46983d._.js
+³   ³   ³           [root-of-the-server]__0a46983d._.js.map
+³   ³   ³           [root-of-the-server]__1512511a._.js
+³   ³   ³           [root-of-the-server]__1512511a._.js.map
+³   ³   ³           [root-of-the-server]__26ab8ec6._.js
+³   ³   ³           [root-of-the-server]__26ab8ec6._.js.map
+³   ³   ³           [root-of-the-server]__4c58c055._.js
+³   ³   ³           [root-of-the-server]__4c58c055._.js.map
+³   ³   ³           [root-of-the-server]__50a7c09c._.js
+³   ³   ³           [root-of-the-server]__50a7c09c._.js.map
+³   ³   ³           [root-of-the-server]__5f370a6a._.js
+³   ³   ³           [root-of-the-server]__5f370a6a._.js.map
+³   ³   ³           [root-of-the-server]__6302eb5e._.js
+³   ³   ³           [root-of-the-server]__6302eb5e._.js.map
+³   ³   ³           [root-of-the-server]__831ae4b6._.js
+³   ³   ³           [root-of-the-server]__831ae4b6._.js.map
+³   ³   ³           [root-of-the-server]__85c8d5a7._.js
+³   ³   ³           [root-of-the-server]__85c8d5a7._.js.map
+³   ³   ³           [root-of-the-server]__86e7898f._.js
+³   ³   ³           [root-of-the-server]__86e7898f._.js.map
+³   ³   ³           [root-of-the-server]__8a4d2eeb._.js
+³   ³   ³           [root-of-the-server]__8a4d2eeb._.js.map
+³   ³   ³           [root-of-the-server]__a01c77f7._.js
+³   ³   ³           [root-of-the-server]__a01c77f7._.js.map
+³   ³   ³           [root-of-the-server]__c0acd754._.js
+³   ³   ³           [root-of-the-server]__c0acd754._.js.map
+³   ³   ³           [root-of-the-server]__c75c51b7._.js
+³   ³   ³           [root-of-the-server]__c75c51b7._.js.map
+³   ³   ³           [root-of-the-server]__d28b8dde._.js
+³   ³   ³           [root-of-the-server]__d28b8dde._.js.map
+³   ³   ³           [root-of-the-server]__dd1cd41c._.js
+³   ³   ³           [root-of-the-server]__dd1cd41c._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_202720b6._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_202720b6._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_59fa4ecd._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_59fa4ecd._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_61844e7b._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_61844e7b._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_6ceddcbf._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_6ceddcbf._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_70653f6f._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_70653f6f._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_7e6b807f._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_7e6b807f._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_80b142f6._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_80b142f6._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_be33119e._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_be33119e._.js.map
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_e5370e88._.js
+³   ³   ³           [turbopack]_browser_dev_hmr-client_hmr-client_ts_e5370e88._.js.map
+³   ³   ³           [turbopack]_runtime.js
+³   ³   ³           [turbopack]_runtime.js.map
+³   ³   ³           _06da9437._.js
+³   ³   ³           _06da9437._.js.map
+³   ³   ³           _13d3ae3b._.js
+³   ³   ³           _13d3ae3b._.js.map
+³   ³   ³           _19eddaf5._.js
+³   ³   ³           _19eddaf5._.js.map
+³   ³   ³           _3fbad973._.js
+³   ³   ³           _3fbad973._.js.map
+³   ³   ³           _515d56cb._.js
+³   ³   ³           _515d56cb._.js.map
+³   ³   ³           _7165354a._.js
+³   ³   ³           _7165354a._.js.map
+³   ³   ³           _a1c976bf._.js
+³   ³   ³           _a1c976bf._.js.map
+³   ³   ³           _a7eca4fb._.js
+³   ³   ³           _a7eca4fb._.js.map
+³   ³   ³           _a89db64d._.js
+³   ³   ³           _a89db64d._.js.map
+³   ³   ³           _dfbfff75._.js
+³   ³   ³           _dfbfff75._.js.map
+³   ³   ³           _ed7dc324._.js
+³   ³   ³           _ed7dc324._.js.map
+³   ³   ³           _f9f24fa1._.js
+³   ³   ³           _f9f24fa1._.js.map
+³   ³   ³           
+³   ³   ÀÄÄÄpages
+³   ³       ³   _app.js
+³   ³       ³   _app.js.map
+³   ³       ³   _document.js
+³   ³       ³   _document.js.map
+³   ³       ³   _error.js
+³   ³       ³   _error.js.map
+³   ³       ³   
+³   ³       ÃÄÄÄ_app
+³   ³       ³       build-manifest.json
+³   ³       ³       next-font-manifest.json
+³   ³       ³       pages-manifest.json
+³   ³       ³       react-loadable-manifest.json
+³   ³       ³       
+³   ³       ÃÄÄÄ_document
+³   ³       ³       next-font-manifest.json
+³   ³       ³       pages-manifest.json
+³   ³       ³       react-loadable-manifest.json
+³   ³       ³       
+³   ³       ÀÄÄÄ_error
+³   ³               build-manifest.json
+³   ³               next-font-manifest.json
+³   ³               pages-manifest.json
+³   ³               react-loadable-manifest.json
+³   ³               
+³   ÃÄÄÄstatic
+³   ³   ÃÄÄÄchunks
+³   ³   ³   ³   node_modules_@swc_helpers_cjs_00636ac3._.js
+³   ³   ³   ³   node_modules_@swc_helpers_cjs_00636ac3._.js.map
+³   ³   ³   ³   node_modules_a51498a5._.js
+³   ³   ³   ³   node_modules_a51498a5._.js.map
+³   ³   ³   ³   node_modules_f374596a._.js
+³   ³   ³   ³   node_modules_f374596a._.js.map
+³   ³   ³   ³   node_modules_next_dist_1a6ee436._.js
+³   ³   ³   ³   node_modules_next_dist_1a6ee436._.js.map
+³   ³   ³   ³   node_modules_next_dist_2ecbf5fa._.js
+³   ³   ³   ³   node_modules_next_dist_2ecbf5fa._.js.map
+³   ³   ³   ³   node_modules_next_dist_b758c999._.js
+³   ³   ³   ³   node_modules_next_dist_b758c999._.js.map
+³   ³   ³   ³   node_modules_next_dist_build_polyfills_polyfill-nomodule.js
+³   ³   ³   ³   node_modules_next_dist_client_8f19e6fb._.js
+³   ³   ³   ³   node_modules_next_dist_client_8f19e6fb._.js.map
+³   ³   ³   ³   node_modules_next_dist_compiled_2ce9398a._.js
+³   ³   ³   ³   node_modules_next_dist_compiled_2ce9398a._.js.map
+³   ³   ³   ³   node_modules_next_dist_ea69acce._.js
+³   ³   ³   ³   node_modules_next_dist_ea69acce._.js.map
+³   ³   ³   ³   node_modules_react-dom_82bb97c6._.js
+³   ³   ³   ³   node_modules_react-dom_82bb97c6._.js.map
+³   ³   ³   ³   pages__app_5771e187._.js
+³   ³   ³   ³   pages__app_9114105e._.js
+³   ³   ³   ³   pages__app_9114105e._.js.map
+³   ³   ³   ³   pages__error_5771e187._.js
+³   ³   ³   ³   pages__error_ec6747c0._.js
+³   ³   ³   ³   pages__error_ec6747c0._.js.map
+³   ³   ³   ³   src_app_cases_new_page_tsx_3d22f4d5._.js
+³   ³   ³   ³   src_app_cases_new_page_tsx_7d43ce8a._.js
+³   ³   ³   ³   src_app_dashboard_page_tsx_3d22f4d5._.js
+³   ³   ³   ³   src_app_dashboard_page_tsx_7d43ce8a._.js
+³   ³   ³   ³   src_app_favicon_ico_mjs_8a7a8fdc._.js
+³   ³   ³   ³   src_app_globals_css_f9ee138c._.single.css
+³   ³   ³   ³   src_app_globals_css_f9ee138c._.single.css.map
+³   ³   ³   ³   src_app_layout_tsx_c0237562._.js
+³   ³   ³   ³   src_app_login_page_tsx_3d22f4d5._.js
+³   ³   ³   ³   src_app_login_page_tsx_7d43ce8a._.js
+³   ³   ³   ³   src_app_page_tsx_3d22f4d5._.js
+³   ³   ³   ³   src_app_page_tsx_7d43ce8a._.js
+³   ³   ³   ³   src_app_page_tsx_8450df25._.js
+³   ³   ³   ³   src_app_register_page_tsx_3d22f4d5._.js
+³   ³   ³   ³   src_app_register_page_tsx_7d43ce8a._.js
+³   ³   ³   ³   src_components_422f8007._.js
+³   ³   ³   ³   src_components_422f8007._.js.map
+³   ³   ³   ³   src_components_a26d276a._.js
+³   ³   ³   ³   src_components_a26d276a._.js.map
+³   ³   ³   ³   src_components_AuthSessionProvider_tsx_4ae6be6b._.js
+³   ³   ³   ³   src_components_AuthSessionProvider_tsx_4ae6be6b._.js.map
+³   ³   ³   ³   [next]_internal_font_google_geist_e531dabc_module_css_f9ee138c._.single.css
+³   ³   ³   ³   [next]_internal_font_google_geist_e531dabc_module_css_f9ee138c._.single.css.map
+³   ³   ³   ³   [next]_internal_font_google_geist_mono_68a01160_module_css_f9ee138c._.single.css
+³   ³   ³   ³   [next]_internal_font_google_geist_mono_68a01160_module_css_f9ee138c._.single.css.map
+³   ³   ³   ³   [root-of-the-server]__49fd8634._.js
+³   ³   ³   ³   [root-of-the-server]__49fd8634._.js.map
+³   ³   ³   ³   [root-of-the-server]__8df7605f._.js
+³   ³   ³   ³   [root-of-the-server]__8df7605f._.js.map
+³   ³   ³   ³   [root-of-the-server]__8ebb6d4b._.css
+³   ³   ³   ³   [root-of-the-server]__8ebb6d4b._.css.map
+³   ³   ³   ³   [root-of-the-server]__923cb372._.js
+³   ³   ³   ³   [root-of-the-server]__923cb372._.js.map
+³   ³   ³   ³   [root-of-the-server]__e2c08166._.js
+³   ³   ³   ³   [root-of-the-server]__e2c08166._.js.map
+³   ³   ³   ³   [turbopack]_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js
+³   ³   ³   ³   [turbopack]_browser_dev_hmr-client_hmr-client_ts_61dcf9ba._.js.map
+³   ³   ³   ³   [turbopack]_browser_dev_hmr-client_hmr-client_ts_66796270._.js
+³   ³   ³   ³   [turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js
+³   ³   ³   ³   [turbopack]_browser_dev_hmr-client_hmr-client_ts_fd44f5a4._.js.map
+³   ³   ³   ³   _0a0a5647._.js
+³   ³   ³   ³   _0a0a5647._.js.map
+³   ³   ³   ³   _0c20faef._.js
+³   ³   ³   ³   _0c20faef._.js.map
+³   ³   ³   ³   _3cae7951._.js
+³   ³   ³   ³   _3cae7951._.js.map
+³   ³   ³   ³   _5e70b3db._.js
+³   ³   ³   ³   _5e70b3db._.js.map
+³   ³   ³   ³   _743ef246._.js
+³   ³   ³   ³   _743ef246._.js.map
+³   ³   ³   ³   _8da48eb0._.js
+³   ³   ³   ³   _8da48eb0._.js.map
+³   ³   ³   ³   _900886b2._.js
+³   ³   ³   ³   _900886b2._.js.map
+³   ³   ³   ³   _9241616d._.js
+³   ³   ³   ³   _9241616d._.js.map
+³   ³   ³   ³   _93808211._.js
+³   ³   ³   ³   _93808211._.js.map
+³   ³   ³   ³   _de1429cf._.js
+³   ³   ³   ³   _de1429cf._.js.map
+³   ³   ³   ³   _e21ff1b0._.js
+³   ³   ³   ³   _e21ff1b0._.js.map
+³   ³   ³   ³   _e69f0d32._.js
+³   ³   ³   ³   _f5490f65._.js
+³   ³   ³   ³   _f5490f65._.js.map
+³   ³   ³   ³   
+³   ³   ³   ÀÄÄÄpages
+³   ³   ³           _app.js
+³   ³   ³           _error.js
+³   ³   ³           
+³   ³   ÃÄÄÄdevelopment
+³   ³   ³       _buildManifest.js
+³   ³   ³       _clientMiddlewareManifest.json
+³   ³   ³       _ssgManifest.js
+³   ³   ³       
+³   ³   ÀÄÄÄmedia
+³   ³           favicon.45db1c09.ico
+³   ³           gyByhwUxId8gMEwcGFWNOITd-s.p.da1ebef7.woff2
+³   ³           gyByhwUxId8gMEwSGFWNOITddY4-s.81df3a5b.woff2
+³   ³           gyByhwUxId8gMEwYGFWNOITddY4-s.b7d310ad.woff2
+³   ³           or3nQ6H_1_WfwkMZI_qYFrcdmhHkjko-s.p.be19f591.woff2
+³   ³           or3nQ6H_1_WfwkMZI_qYFrkdmhHkjkotbA-s.e32db976.woff2
+³   ³           or3nQ6H_1_WfwkMZI_qYFrMdmhHkjkotbA-s.cb6bbcb1.woff2
+³   ³           
+³   ÀÄÄÄtypes
+ÃÄÄÄ.vs
+³   ³   slnx.sqlite
+³   ³   VSWorkspaceState.json
+³   ³   
+³   ÀÄÄÄaligner-portal
+³       ÃÄÄÄFileContentIndex
+³       ³       3d4fb689-33f1-4ead-9fbb-2e71c0ea6109.vsidx
+³       ³       7b88eb0a-735b-4d30-b0b9-eaa6d042ba9c.vsidx
+³       ³       9866edb6-661c-4a0e-a306-b6dd6e31fa4d.vsidx
+³       ³       
+³       ÀÄÄÄv17
+³               DocumentLayout.backup.json
+³               DocumentLayout.json
+³               workspaceFileList.bin
+³               
+ÃÄÄÄprisma
+³   ³   dev.db
+³   ³   schema.prisma
+³   ³   
+³   ÀÄÄÄmigrations
+³       ³   migration_lock.toml
+³       ³   
+³       ÃÄÄÄ20250521230715_init
+³       ³       migration.sql
+³       ³       
+³       ÃÄÄÄ20250521231608_add_email_confirmation
+³       ³       migration.sql
+³       ³       
+³       ÃÄÄÄ20250522004718_add_notifications
+³       ³       migration.sql
+³       ³       
+³       ÃÄÄÄ20250522015350_add_patientid
+³       ³       migration.sql
+³       ³       
+³       ÀÄÄÄ20250522050440_add_user_phone
+³               migration.sql
+³               
+ÃÄÄÄpublic
+³   ³   file.svg
+³   ³   globe.svg
+³   ³   next.svg
+³   ³   vercel.svg
+³   ³   window.svg
+³   ³   
+³   ÀÄÄÄuploads
+ÃÄÄÄsrc
+³   ÃÄÄÄapp
+³   ³   ³   favicon.png
+³   ³   ³   globals.css
+³   ³   ³   layout.tsx
+³   ³   ³   page.tsx
+³   ³   ³   
+³   ³   ÃÄÄÄapi
+³   ³   ³   ÃÄÄÄappointments
+³   ³   ³   ³       route.tsx
+³   ³   ³   ³       
+³   ³   ³   ÃÄÄÄauth
+³   ³   ³   ³   ÀÄÄÄ[...nextauth]
+³   ³   ³   ³           route.ts
+³   ³   ³   ³           
+³   ³   ³   ÃÄÄÄcases
+³   ³   ³   ³   ³   route.tsx
+³   ³   ³   ³   ³   
+³   ³   ³   ³   ÀÄÄÄ[caseId]
+³   ³   ³   ³       ³   edit.tsx
+³   ³   ³   ³       ³   
+³   ³   ³   ³       ÃÄÄÄconsent
+³   ³   ³   ³       ³       route.tsx
+³   ³   ³   ³       ³       
+³   ³   ³   ³       ÃÄÄÄreview
+³   ³   ³   ³       ³       route.tsx
+³   ³   ³   ³       ³       
+³   ³   ³   ³       ÀÄÄÄship
+³   ³   ³   ³               route.tsx
+³   ³   ³   ³               
+³   ³   ³   ÃÄÄÄfiles
+³   ³   ³   ³   ÀÄÄÄ[filename]
+³   ³   ³   ³           route.tsx
+³   ³   ³   ³           
+³   ³   ³   ÃÄÄÄnotifications
+³   ³   ³   ³       route.tsx
+³   ³   ³   ³       
+³   ³   ³   ÀÄÄÄregister
+³   ³   ³           route.tsx
+³   ³   ³           
+³   ³   ÃÄÄÄcases
+³   ³   ³   ÀÄÄÄnew
+³   ³   ³           page.tsx
+³   ³   ³           
+³   ³   ÃÄÄÄdashboard
+³   ³   ³       page.tsx
+³   ³   ³       
+³   ³   ÃÄÄÄlogin
+³   ³   ³       page.tsx
+³   ³   ³       
+³   ³   ÀÄÄÄregister
+³   ³           page.tsx
+³   ³           
+³   ÀÄÄÄcomponents
+³           AdminDashboard.tsx
+³           Appointments.tsx
+³           AuthSessionProvider.tsx
+³           DentistDashboard.tsx
+³           EditCaseModal.tsx
+³           ManufacturerDashboard.tsx
+³           Navbar.tsx
+³           PatientDashboard.tsx
+³           ReviewerDashboard.tsx
+³           
+ÀÄÄÄuploads

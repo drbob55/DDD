@@ -1,3 +1,4 @@
+import { ROLES, CASE_STATUS, PAYMENT_STATUS, SEX_OPTIONS } from "@/lib/constants";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "../api/auth/[...nextauth]/route";
 import PatientDashboard from "../../components/PatientDashboard";
@@ -8,7 +9,7 @@ import AdminDashboard from "../../components/AdminDashboard";
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions);
-
+  
   if (!session?.user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -21,17 +22,17 @@ export default async function DashboardPage() {
       </div>
     );
   }
-
+  
   switch (session.user.role) {
-    case "PATIENT":
+    case ROLES.PATIENT:
       return <PatientDashboard user={session.user} />;
-    case "DENTIST":
+    case ROLES.DENTIST:
       return <DentistDashboard user={session.user} />;
-    case "REVIEWER":
+    case ROLES.REVIEWER:
       return <ReviewerDashboard user={session.user} />;
-    case "MANUFACTURER":
+    case ROLES.MANUFACTURER:
       return <ManufacturerDashboard user={session.user} />;
-    case "ADMIN":
+    case ROLES.ADMIN:
       return <AdminDashboard user={session.user} />;
     default:
       return (

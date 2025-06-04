@@ -13,11 +13,11 @@
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.8.2",
     "bcryptjs": "^3.0.2",
-    "next": "15.3.2",
+    "next": "^15.3.2",
     "next-auth": "^4.24.11",
     "prisma": "^6.8.2",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "react-hot-toast": "^2.5.2",
     "uuid": "^11.1.0"
   },
@@ -29,6 +29,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.3.2",
+    "node-fetch": "^2.7.0",
     "prettier": "^3.5.3",
     "tailwindcss": "^4",
     "typescript": "^5"

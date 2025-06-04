@@ -1,56 +1,89 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite" // Change to "postgresql" if using Postgres
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
+// --- MODELS ---
 model User {
-  id                String         @id @default(cuid())
-  name              String
-  email             String         @unique
-  password          String?        // Optional if using OAuth
-  role              Role
-  confirmed         Boolean        @default(false)
-  confirmationToken String?
-  casesAsPatient    Case[]         @relation("PatientCases")
-  casesAsDentist    Case[]         @relation("DentistCases")
-  casesAsReviewer   Case[]         @relation("ReviewerCases")
-  appointments      Appointment[]
-  notifications     Notification[] // <-- Add this relation
-  createdAt         DateTime       @default(now())
+  id                    String   @id @default(cuid())  // Changed to auto-generated for easier management
+  userId                String   @unique               // 8-digit string for business logic
+  firstName             String
+  lastName              String
+  name                  String                         // Full name for quick display
+  email                 String   @unique
+  username              String?  @unique               // Made unique for login
+  password              String
+  phone                 String?  @unique               // Made unique for login
+  role                  String                         // Admin, Dentist, Reviewer, Manufacturer, Patient
+  sex                   String?                        // Made optional for registration flow
+  dateOfBirth           DateTime?                      // Made optional for registration flow
+  isVerified            Boolean  @default(false)      // Renamed from confirmed
+  emailVerificationCode String?                        // For email verification
+  phoneVerificationCode String?                        // For phone verification
+  verificationMethod    String?                        // email, phone, or both
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relations
+  casesAsPatient        Case[]   @relation("PatientCases")
+  casesAsDentist        Case[]   @relation("DentistCases")
+  casesAsReviewer       Case[]   @relation("ReviewerCases")
+  appointments          Appointment[]
+  notifications         Notification[]
+  payments              Payment[]
+  logs                  Log[]
 }
 
 model Case {
-  id               String        @id @default(cuid())
-  patient          User          @relation("PatientCases", fields: [patientId], references: [id])
+  id               String      @id @default(cuid())
+  caseNumber       String      @unique              // Human-readable case number
   patientId        String
-  dentist          User          @relation("DentistCases", fields: [dentistId], references: [id])
+  patient          User        @relation("PatientCases", fields: [patientId], references: [id])
+  dentist          User        @relation("DentistCases", fields: [dentistId], references: [id])
   dentistId        String
-  reviewer         User?         @relation("ReviewerCases", fields: [reviewerId], references: [id])
+
+  reviewer         User?       @relation("ReviewerCases", fields: [reviewerId], references: [id])
   reviewerId       String?
-  scanFileUrl      String
+
+  // Patient snapshot fields
+  patientFirstName String
+  patientLastName  String
+  patientEmail     String
+  patientPhone     String?
+  patientSex       String
+  patientDOB       DateTime
+
+  // File uploads
+  upperScanFile    String?     // Upper jaw scan
+  lowerScanFile    String?     // Lower jaw scan
+  biteScanFile     String?     // Bite registration scan
   treatmentPlanUrl String?
-  status           CaseStatus
+  
+  status           String      @default("Submitted")  // Submitted, In Review, Approved, In Production, Completed
   notes            String?
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  hiddenByDentist  Boolean     @default(false)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  // Relations
   appointments     Appointment[]
+  payments         Payment[]
 }
 
 model Appointment {
-  id        String   @id @default(cuid())
-  case      Case     @relation(fields: [caseId], references: [id])
-  caseId    String
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  date      DateTime
-  notes     String?
+  id         String   @id @default(cuid())
+  case       Case     @relation(fields: [caseId], references: [id])
+  caseId     String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  date       DateTime
+  notes      String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Notification {
@@ -58,24 +91,42 @@ model Notification {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   message   String
+  type      String?  // email, sms, in-app
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
 }
 
-enum Role {
-  PATIENT
-  DENTIST
-  REVIEWER
-  MANUFACTURER
-  ADMIN
+model Payment {
+  id          String        @id @default(cuid())
+  user        User          @relation(fields: [userId], references: [id])
+  userId      String
+  case        Case          @relation(fields: [caseId], references: [id])
+  caseId      String
+  amount      Decimal
+  currency    String        @default("USD")
+  status      String        @default("PENDING")  // PENDING, COMPLETED, FAILED, REFUNDED
+  description String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
 }
 
-enum CaseStatus {
-  PENDING_REVIEW
-  AWAITING_CONSENT
-  IN_TREATMENT
-  MANUFACTURING
-  SHIPPED
-  COMPLETED
-  REJECTED
+model Log {
+  id         String   @id @default(cuid())
+  userId     String?
+  action     String
+  targetType String
+  targetId   String?
+  details    String?   // JSON string for flexible logging
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  user       User?    @relation(fields: [userId], references: [id])
+}
+
+// For managing admin PIN
+model SystemConfig {
+  id        String   @id @default("config")
+  adminPin  String   @default("1234")  // Should be changed on first setup
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

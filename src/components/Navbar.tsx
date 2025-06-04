@@ -9,7 +9,6 @@ export default function Navbar() {
       <div className="space-x-4">
         <Link href="/login" className="text-blue-700 hover:underline">Login</Link>
         <Link href="/register" className="text-blue-700 hover:underline">Register</Link>
-        <Link href="/dashboard" className="text-gray-600 hover:text-blue-700 hover:underline">Dashboard</Link>
       </div>
     </nav>
   );

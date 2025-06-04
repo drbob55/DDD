@@ -1,15 +1,55 @@
-export default function AdminDashboard({ user }: { user: any }) {
+"use client";
+
+import React, { useState } from "react";
+import UserTable from "./admin/UserTable";
+import CaseTable from "./admin/CaseTable";
+import PaymentTable from "./admin/PaymentTable";
+import LogTable from "./admin/LogTable";
+import NotificationSender from "./admin/NotificationSender";
+import { signOut } from "next-auth/react";
+
+const TABS = [
+  { label: "Users", key: "users" },
+  { label: "Cases", key: "cases" },
+  { label: "Payments", key: "payments" },
+  { label: "Logs", key: "logs" },
+  { label: "Notifications", key: "notifications" },
+];
+
+export default function AdminDashboard({ user }) {
+  const [tab, setTab] = useState("users");
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <div className="bg-white rounded-xl shadow p-8 w-full max-w-xl text-center">
-        <h2 className="text-3xl font-bold mb-4 text-blue-700">Welcome, Admin {user.name}!</h2>
-        <p className="text-gray-600 mb-4">This is your admin dashboard.</p>
-        <ul className="mb-6 text-left">
-          <li>• View all cases and users</li>
-          <li>• Troubleshoot and audit</li>
-        </ul>
-        <p>Feature: User/case management coming soon.</p>
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Header row with title and logout button */}
+      <div className="flex items-center justify-between mb-4">
+        <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+        <button
+          onClick={() => signOut({ callbackUrl: "/" })}
+          className="px-4 py-2 bg-gray-200 text-red-700 rounded-xl hover:bg-gray-300 font-bold"
+        >
+          Logout
+        </button>
       </div>
+      <div className="flex space-x-4 mb-6">
+        {TABS.map((t) => (
+          <button
+            key={t.key}
+            className={`px-4 py-2 rounded-xl font-bold ${
+              tab === t.key
+                ? "bg-blue-600 text-white"
+                : "bg-gray-200 text-blue-800"
+            }`}
+            onClick={() => setTab(t.key)}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+      {tab === "users" && <UserTable />}
+      {tab === "cases" && <CaseTable />}
+      {tab === "payments" && <PaymentTable />}
+      {tab === "logs" && <LogTable />}
+      {tab === "notifications" && <NotificationSender />}
     </div>
   );
 }
