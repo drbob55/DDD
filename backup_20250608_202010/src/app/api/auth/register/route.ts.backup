@@ -1,0 +1,104 @@
+// app/api/auth/register/route.ts
+import { NextRequest, NextResponse } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
+
+const prisma = new PrismaClient();
+
+// Generate random 6-digit verification code
+function generateVerificationCode(): string {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Generate unique username from email
+function generateUsername(email: string): string {
+  const baseUsername = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '');
+  return `${baseUsername}${Math.floor(Math.random() * 10000)}`;
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { firstName, lastName, email, phone, password, role, verificationMethod } = body;
+
+    // Validation
+    if (!firstName || !lastName || !email || !password) {
+      return NextResponse.json(
+        { error: 'Required fields are missing' },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 8) {
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters' },
+        { status: 400 }
+      );
+    }
+
+    // Check if user already exists
+    const existingUser = await prisma.user.findFirst({
+      where: {
+        OR: [
+          { email },
+          ...(phone ? [{ phone }] : [])
+        ]
+      }
+    });
+
+    if (existingUser) {
+      return NextResponse.json(
+        { error: 'User with this email or phone already exists' },
+        { status: 409 }
+      );
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Generate verification codes
+    const emailVerificationCode = generateVerificationCode();
+    const phoneVerificationCode = generateVerificationCode();
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        firstName,
+        lastName,
+        email,
+        phone: phone || null,
+        username: generateUsername(email),
+        password: hashedPassword,
+        role: role || 'PATIENT',
+        isVerified: false,
+        emailVerificationCode,
+        phoneVerificationCode: phone ? phoneVerificationCode : null,
+        verificationMethod
+      }
+    });
+
+    // Send verification email/SMS based on verificationMethod
+    // TODO: Implement email/SMS sending logic here
+    if (verificationMethod === 'email' || verificationMethod === 'both') {
+      // Send email with emailVerificationCode
+      console.log(`Email verification code for ${email}: ${emailVerificationCode}`);
+    }
+    
+    if ((verificationMethod === 'phone' || verificationMethod === 'both') && phone) {
+      // Send SMS with phoneVerificationCode
+      console.log(`Phone verification code for ${phone}: ${phoneVerificationCode}`);
+    }
+
+    return NextResponse.json({
+      success: true,
+      message: 'Registration successful. Please check your email/phone for verification code.',
+      userId: user.id
+    });
+  } catch (error) {
+    console.error('Registration error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}

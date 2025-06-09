@@ -1,0 +1,60 @@
+import { NextRequest, NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../../auth/[...nextauth]/route";
+
+const prisma = new PrismaClient();
+
+export async function PATCH(
+  req: NextRequest,
+  { params }: { params: { caseId: string } }
+) {
+  try {
+    const session = await getServerSession(authOptions);
+    if (!session?.user || session.user.role !== "ADMIN") {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { status } = await req.json();
+    const caseId = params.caseId;
+
+    if (!status) {
+      return NextResponse.json({ error: "Status is required" }, { status: 400 });
+    }
+
+    const validStatuses = [
+      "PENDING_REVIEW",
+      "AWAITING_CONSENT",
+      "IN_TREATMENT",
+      "MANUFACTURING",
+      "SHIPPED",
+      "COMPLETED",
+      "REJECTED"
+    ];
+
+    if (!validStatuses.includes(status)) {
+      return NextResponse.json({ error: "Invalid status" }, { status: 400 });
+    }
+
+    const updatedCase = await prisma.case.update({
+      where: { id: caseId },
+      data: { status },
+    });
+
+    // Log the action
+    await prisma.log.create({
+      data: {
+        userId: session.user.id,
+        action: "ADMIN_STATUS_OVERRIDE",
+        targetType: "CASE",
+        targetId: caseId,
+        details: `Admin changed case status to ${status}`,
+      },
+    });
+
+    return NextResponse.json({ success: true, case: updatedCase });
+  } catch (err: any) {
+    console.error("Case status update error:", err);
+    return NextResponse.json({ error: err.message }, { status: 500 });
+  }
+}

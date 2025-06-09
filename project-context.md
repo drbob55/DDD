@@ -1,0 +1,264 @@
+# Project Context
+
+Generated: 2025-06-06T17:13:35.662Z
+
+## Directory Structure
+
+```
+check-project.js
+lib/
+  appointments.ts
+next-env.d.ts
+next.config.ts
+package.json
+postcss.config.mjs
+prisma/
+  migrations/
+    20250521230715_init/
+      migration.sql
+    20250521231608_add_email_confirmation/
+      migration.sql
+    20250522004718_add_notifications/
+      migration.sql
+    20250522015350_add_patientid/
+      migration.sql
+    20250522050440_add_user_phone/
+      migration.sql
+    20250531170156_add_relations/
+      migration.sql
+    20250601071222_fix_relations/
+      migration.sql
+    20250602183614_init/
+      migration.sql
+    20250602220456_add_username_to_user/
+      migration.sql
+    20250602220607_add_username_to_user/
+      migration.sql
+    20250602233927_2/
+      migration.sql
+    20250603160651_add_patient_id_to_case/
+      migration.sql
+    20250603161014_add_patient_id_to_case/
+      migration.sql
+    20250603161022_add_patient_id_to_case/
+      migration.sql
+    20250603162550_add_hidden_by_dentist/
+      migration.sql
+    migration_lock.toml
+  prisma/
+    dev.db
+  schema.prisma
+public/
+  file.svg
+  globe.svg
+  next.svg
+  uploads/
+    cases/
+      250606-004/
+      250606-099/
+      250606-121/
+      250606-143/
+      250606-146/
+      250606-148/
+      250606-210/
+      250606-275/
+      250606-305/
+      250606-351/
+      250606-376/
+      250606-430/
+      250606-439/
+      250606-440/
+      250606-459/
+      250606-519/
+      250606-536/
+      250606-602/
+      250606-635/
+      250606-658/
+      250606-663/
+      250606-758/
+      250606-794/
+      250606-834/
+      250606-843/
+      250606-896/
+      250606-926/
+      250606-947/
+  vercel.svg
+  window.svg
+README.md
+scripts/
+  check-db-files.js
+  diagnose-upload-v2.js
+  diagnose-upload.js
+  fix-all-cases.js
+  setup-uploads.js
+  test-upload.js
+setup-uploads.sh
+show-structure.js
+src/
+  app/
+    api/
+      admin/
+      appointments/
+      auth/
+      cases/
+      clinics/
+      files/
+      logs/
+      notifications/
+      payments/
+      register/
+      test-basic/
+      users/
+    dashboard/
+      page.tsx
+    favicon.png
+    globals.css
+    layout.tsx
+    login/
+      page.tsx
+    page.tsx
+    register/
+      page.tsx
+  components/
+    admin/
+      CaseTable.tsx
+      LogTable.tsx
+      NotificationSender.tsx
+      PaymentTable.tsx
+      UserTable.tsx
+    AdminDashboard.tsx
+    appointments/
+    Appointments.tsx
+      AppointmentCalendar.tsx
+      AppointmentCompletionModal.tsx
+      AppointmentFilters.tsx
+      AppointmentList.tsx
+      AppointmentModal.tsx
+      Appointments.tsx
+      AppointmentScheduler.tsx
+      DentistAppointmentsDashboard.tsx
+      EnhancedAppointmentsView.tsx
+      index.ts
+    AppointmentScheduler.tsx
+    AuthSessionProvider.tsx
+    cases/
+      CaseDetails.tsx
+      CaseFilters.tsx
+      CaseList.tsx
+      CaseNotes.tsx
+      CaseTimeline.tsx
+      index.ts
+      NewCaseModal.tsx
+    dentist/
+      DentistDashboard.tsx
+    EditCaseModal.tsx
+    layout/
+      Sidebar.tsx
+    LogsTable.tsx
+    ManufacturerDashboard.tsx
+    modals/
+      AccountSettingsModal.tsx
+    Navbar.tsx
+    PatientDashboard.tsx
+    PaymentsTable.tsx
+    PaymenyFormModal.tsx
+    ReviewerDashboard.tsx
+    shared/
+      ErrorBoundary.tsx
+      FilePreview.tsx
+      index.ts
+      LoadingSkeleton.tsx
+      Modal.tsx
+      Pagination.tsx
+      ThreeDViewer.tsx
+      Toast.tsx
+      VirtualList.tsx
+  contexts/
+    DentistContext.tsx
+  hoc/
+    index.tsx
+  hooks/
+    index.ts
+    useAsync.ts
+    useCaseActivities.ts
+    useDebounce.ts
+    useDentistData.ts
+    useForms.ts
+    useLocalStorage.ts
+    usePolling.ts
+    useTimezone.ts
+    useToast.ts
+    useWebSocket.ts
+  lib/
+    activity-logger.ts
+    auth.ts
+    constants.ts
+    fileUpload.ts
+    prisma.ts
+  sevices/
+    api.ts
+  types/
+    activity.types.ts
+    appointment.types.ts
+    case.types.ts
+    clinic.ts
+    indexts
+    next-auth.d.ts
+    three-extensions.d.ts
+structure.txt
+test/
+test-registration.js
+  route.ts
+tsconfig.json
+uploads/
+  250603-088_upper_62d3ea82-57f2-4f39-8fe6-cdab995a671b.obj
+  250603-226_upper_e745ed6c-245c-4166-8c4d-c1854eb52790.obj
+  250603-879_upper_94b6bb8f-ac5c-455e-833e-ddefdbff1dbd.obj
+  250604-095_upper_0b642ce1-4fba-4170-9db3-296f61d206a8.obj
+  250604-148_upper_45198291-8ec0-499e-820b-9ee6a1edfc45.obj
+  250604-270_upper_36ed58f4-e106-4e1e-85c6-46e4a29e353a.obj
+  250604-467_upper_d3f65a6f-fb2a-4ace-a3b2-0641bf82567f.obj
+  250604-495_upper_ed06228d-c48e-4570-bada-f230542fe733.stl
+  250604-549_upper_fd1c3574-d154-4130-b2f3-b925bd75aff1.obj
+  250604-558_upper_0d18f9e4-50d0-4cf4-b50a-79720704fc4e.obj
+  250604-585_upper_841cac4d-2f6d-4110-8976-fdc20f3d0774.stl
+  250604-698_upper_377b9f1f-d249-4006-9436-84b2c60a3134.stl
+  250604-745_upper_01cf4e69-bcfa-44f2-a046-74d89478de5c.stl
+  250604-861_upper_b70c21d0-0c88-4f6d-8475-5bc162a196fb.stl
+  250604-865_upper_d22528f4-60b8-49c0-8042-2eb713d94f66.obj
+  250604-901_upper_e9d130cf-8a4a-44a2-bf4c-555ed7873c5a.obj
+  250604-907_upper_034c72cc-70a8-4839-9f24-160f69983f75.stl
+  250604-915_upper_58adc7cc-e266-4d06-b86d-d1d037304b14.stl
+  250604-939_upper_dcf60fe8-c134-435b-b796-bb1af1dbd8b1.stl
+  250605-072_upper_1ce2ad22-ae10-4248-a8ed-0c83fff4dcce.stl
+  250605-244_bite_0ef50697-edb4-44d4-83b9-7abe40e523d2.stl
+  250605-513_upper_87fb30b2-15d0-4b61-9a0e-b069745d3d45.stl
+  250605-828_upper_456756dc-7d07-49ee-b8e0-405da2efba05.obj
+  250605-910_upper_187c7d45-6ad6-45d5-860f-05490cf1710d.obj
+  250606-177_lower_dbf587da-fb9f-4edb-b7b2-a3231467c883.obj
+  250606-285_upper_4a67b92c-d4d8-4f6a-8fd1-5a939a76650e.obj
+  250606-312_upper_e990e1fe-07d3-49cb-8673-73a285af7c5c.obj
+  250606-516_upper_67351a10-4f2d-444f-9726-63195ac0fa4b.stl
+  250606-953_upper_21ec51f1-8a55-41fa-8085-6d6f5b41cbfa.stl
+  293d1a77-dbf5-4fd8-afa3-798d8e9f1f20.stl
+  2f121d6a-0515-4a5f-b258-35bd59c2b3ea.stl
+  39991951_upper_071b9137-9a69-4bc5-a85a-c8604f9624d6.stl
+  39991951_upper_1644fafa-bf4a-4f3c-804a-ed66c411080e.obj
+  39991951_upper_24e1f489-538e-4e95-9c10-62f09c8332c6.obj
+  39991951_upper_9e68acf4-23a0-4005-aab1-a1bcbc25ae6a.obj
+  39991951_upper_eae01596-739d-46f1-a7fb-51982421ccb2.obj
+  39991951_upper_f802e96e-076c-4677-9eb7-ace6ba3630ee.obj
+  a536bbe8-e192-4773-9ab8-8158299f6ec1.stl
+utils/
+  validation.ts
+verify-admin.js
+```
+
+## Recommendations
+
+3. Initialize database:
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+

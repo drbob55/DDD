@@ -1,0 +1,38 @@
+# API Route Inventory
+
+## Current Routes Analysis
+- /test-basic
+- /payments/[id]/status
+- /payments/[id]
+- /appointments
+- /appointments/[appointmentId]/status
+- /appointments/[appointmentId]
+- /auth/verify
+- /auth/complete-registration
+- /auth/verify-token
+- /auth/register
+- /auth/[...nextauth]
+- /auth/login
+- /admin/stats/setup
+- /cases/[caseId]/archive
+- /cases/[caseId]/reassign-dentist
+- /cases/[caseId]/payment-status
+- /cases/[caseId]/reassign-reviewer
+- /cases/[caseId]/status
+- /cases/[caseId]/notes
+- /cases/[caseId]
+- /cases/[caseId]/files/[fileId]
+- /cases/[caseId]/files
+- /cases/[caseId]/activities
+- /cases
+- /clinics/[clinicId]
+- /clinics
+- /users/preferences
+- /users/password
+- /users/exists
+- /users/profile
+- /users
+- /users/[id]/password
+- /users/[id]/verify
+- /users/[id]
+- /files/[...path]
