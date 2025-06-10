@@ -74,3 +74,4 @@ migration_workspace/
 
 # Scripts (optional - remove this line if you want to track scripts)
 # *.sh
+backup_*/
