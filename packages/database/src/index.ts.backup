@@ -1,0 +1,92 @@
+/**
+ * @dental/database - Infrastructure Layer
+ * 
+ * This package provides the database infrastructure for the dental platform.
+ * Following DDD principles, this is part of the infrastructure layer and should
+ * be accessed through repository interfaces in the domain layer.
+ */
+
+// Core client export (keep your existing implementation)
+export { prisma, disconnectPrisma } from './client';
+export { default } from './client';
+
+// Repository implementations (new)
+export { UserRepository } from './repositories/user/user.repository';
+export { CaseRepository } from './repositories/case/case.repository';
+export { AppointmentRepository } from './repositories/appointment/appointment.repository';
+export { PaymentRepository } from './repositories/payment/payment.repository';
+export { NotificationRepository } from './repositories/notification/notification.repository';
+
+// Repository interfaces (new)
+export type { IUserRepository } from './repositories/user/user.repository.interface';
+export type { ICaseRepository } from './repositories/case/case.repository.interface';
+export type { IAppointmentRepository } from './repositories/appointment/appointment.repository.interface';
+export type { IPaymentRepository } from './repositories/payment/payment.repository.interface';
+export type { INotificationRepository } from './repositories/notification/notification.repository.interface';
+
+// Base repository interfaces (new)
+export type {
+  IRepository,
+  ISpecification,
+  IPaginationOptions,
+  IPaginatedResult,
+  QueryOptions
+} from './repositories/base/repository.interface';
+
+// Error classes (use the enhanced ones from errors.ts)
+export {
+  DatabaseError,
+  NotFoundError,
+  UniqueConstraintError,
+  BusinessError,
+  ValidationError,
+  TransactionError,
+  handlePrismaError
+} from './errors';
+
+// Prisma utilities
+export { Prisma } from '@prisma/client';
+export type { PrismaClient } from '@prisma/client';
+
+// Re-export ACTUAL types from your schema (corrected list)
+export type {
+  // User Bounded Context
+  User,
+  UserPreferences,
+  Session,
+  
+  // Case Bounded Context
+  Case,
+  CaseFile,
+  CaseNote,
+  CaseActivity,
+  
+  // Appointment Bounded Context
+  Appointment,
+  
+  // Clinic Bounded Context
+  Clinic,
+  
+  // Payment Bounded Context
+  Payment,
+  
+  // Notification Bounded Context
+  Notification,
+  
+  // System Bounded Context
+  Log,
+  SystemConfig,
+} from '@prisma/client';
+
+// Note: Your schema uses strings for enums, not Prisma enums
+// So these won't exist as types. Instead, they should come from @dental/shared/constants
+
+// Transaction helper (keep your existing one)
+export { withTransaction } from './utils/transaction';
+
+// Unit of Work pattern (new)
+export { UnitOfWork } from './utils/unit-of-work';
+
+// Repository factory (new)
+export { createRepositories } from './repositories';
+export type { Repositories } from './repositories';

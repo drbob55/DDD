@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": undefined,
+    "composite": false,
+    "incremental": false,
+    "paths": {
+      "@dental/shared": ["../shared/src"],
+      "@dental/shared/*": ["../shared/src/*"]
+    }
+  },
+  "include": ["src/**/*", "../shared/src/**/*"]
+}

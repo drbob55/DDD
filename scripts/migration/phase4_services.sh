@@ -420,8 +420,8 @@ function ActivityFeed({ activities = [] }: any) {
 }
 EOF
 
-# Appointment Dashboard
-cat > apps/web/src/components/dashboards/DentistDashboard.tsx << 'EOF'
+# Dentist Dashboard
+cat > apps/web/src/components/dashboards/dentist/DentistDashboard.tsx << 'EOF'
 'use client';
 
 import React from 'react';

@@ -3,7 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { ROLES } from "@/lib/constants";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../../../auth/[...nextauth]/route";
+import { authOptions } from "../../../../../../../apps/web/src/app/api/auth/[...nextauth]/route";
 
 export async function PATCH(
   req: NextRequest,

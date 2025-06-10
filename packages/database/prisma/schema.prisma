@@ -1,0 +1,616 @@
+// packages/database/prisma/schema.prisma
+// Domain-Driven Design Schema Organization
+// Bounded Contexts: User, Case, Appointment, Payment, Notification, System
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"  // Change to "postgresql" for production
+  url      = env("DATABASE_URL")
+}
+
+// ===========================
+// USER BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: User
+// Value Objects: UserPreferences
+// Supporting Entities: Session
+
+model User {
+  id                    String   @id @default(cuid())
+  
+  // Identity
+  email                 String   @unique
+  username              String?  @unique
+  password              String?
+  
+  // Value Objects embedded
+  firstName             String
+  lastName              String
+  phone                 String?  @unique
+  sex                   String?  // VO: SEX_OPTIONS
+  dateOfBirth           DateTime?
+  
+  // Domain Properties
+  role                  String   @default("PATIENT") // VO: USER_ROLES
+  isActive              Boolean  @default(true)
+  isVerified            Boolean  @default(false)
+  verificationMethod    String?  // VO: VERIFICATION_METHODS
+  emailVerificationCode String?
+  phoneVerificationCode String?
+  profileCompleted      Boolean  @default(false)
+  
+  // Security Aggregate
+  lastLoginAt           DateTime?
+  passwordChangedAt     DateTime?
+  failedLoginAttempts   Int      @default(0)
+  lockedUntil           DateTime?
+  
+  // Audit Fields
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Relationships to other Aggregates
+  preferences           UserPreferences?
+  sessions              Session[]
+  
+  // Cross-Bounded Context Relations
+  ownedClinics          Clinic[]             @relation("ClinicOwner")
+  casesAsPatient        Case[]               @relation("PatientCases")
+  casesAsDentist        Case[]               @relation("DentistCases")
+  casesAsReviewer       Case[]               @relation("ReviewerCases")
+  casesAsManufacturer   Case[]               @relation("ManufacturerCases")
+  appointments          Appointment[]        @relation("AppointmentUser")
+  patientAppointments   Appointment[]        @relation("AppointmentPatient")
+  caseNotes             CaseNote[]
+  notifications         Notification[]
+  payments              Payment[]
+  activities            CaseActivity[]
+  auditLogs             Log[]
+  uploadedFiles         CaseFile[]
+  
+  @@index([email])
+  @@index([phone])
+  @@index([role])
+  @@index([isActive])
+}
+
+// User Aggregate - Value Object
+model UserPreferences {
+  id                    String   @id @default(cuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Notification Settings
+  emailNotifications    Boolean  @default(true)
+  smsNotifications      Boolean  @default(false)
+  appointmentReminders  Boolean  @default(true)
+  caseUpdateAlerts      Boolean  @default(true)
+  marketingEmails       Boolean  @default(false)
+  
+  // Display Settings
+  language              String   @default("en")
+  timezone              String   @default("America/New_York")
+  dateFormat            String   @default("MM/DD/YYYY")
+  timeFormat            String   @default("12h")
+  darkMode              Boolean  @default(false)
+  
+  // Business Settings
+  defaultClinicId       String?
+  autoArchiveDays       Int      @default(90)
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+// User Aggregate - Entity
+model Session {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  token         String   @unique
+  ipAddress     String?
+  userAgent     String?
+  deviceInfo    String?  // JSON as String for SQLite compatibility
+  
+  lastActivity  DateTime
+  expiresAt     DateTime
+  isValid       Boolean  @default(true)
+  
+  createdAt     DateTime @default(now())
+  
+  @@index([userId])
+  @@index([token])
+  @@index([expiresAt])
+}
+
+// ===========================
+// CASE BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: Case
+// Entities: CaseFile, CaseNote, CaseActivity
+
+model Case {
+  id                    String   @id @default(cuid())
+  caseNumber            String   @unique
+  
+  // Aggregate References
+  patientId             String
+  patient               User     @relation("PatientCases", fields: [patientId], references: [id])
+  dentistId             String
+  dentist               User     @relation("DentistCases", fields: [dentistId], references: [id])
+  reviewerId            String?
+  reviewer              User?    @relation("ReviewerCases", fields: [reviewerId], references: [id])
+  manufacturerId        String?
+  manufacturer          User?    @relation("ManufacturerCases", fields: [manufacturerId], references: [id])
+  clinicId              String?
+  clinic                Clinic?  @relation(fields: [clinicId], references: [id])
+  
+  // Domain Properties
+  type                  String   @default("ALIGNER")
+  treatmentType         String   @default("STANDARD")
+  status                String   @default("NEW")
+  priority              String   @default("NORMAL")
+  
+  // Clinical Information
+  description           String   // Large text
+  chiefComplaint        String?
+  clinicalFindings      String?
+  treatmentPlan         String?
+  estimatedDuration     Int?
+  actualDuration        Int?
+  
+  // Financial Aggregate
+  estimatedCost         Float?   // Using Float for SQLite
+  actualCost            Float?
+  paidAmount            Float    @default(0)
+  paymentStatus         String   @default("PENDING")
+  currency              String   @default("USD")
+  
+  // Business Rules
+  isUrgent              Boolean  @default(false)
+  requiresConsent       Boolean  @default(true)
+  consentReceived       Boolean  @default(false)
+  hiddenByDentist       Boolean  @default(false)
+  archivedByDentist     Boolean  @default(false)
+  
+  // Workflow Dates
+  consentReceivedAt     DateTime?
+  reviewStartedAt       DateTime?
+  reviewCompletedAt     DateTime?
+  approvedAt            DateTime?
+  rejectedAt            DateTime?
+  manufacturingStartedAt DateTime?
+  shippedAt             DateTime?
+  deliveredAt           DateTime?
+  completedAt           DateTime?
+  archivedAt            DateTime?
+  
+  // Audit
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+  
+  // Aggregate Members
+  files                 CaseFile[]
+  notes                 CaseNote[]
+  activities            CaseActivity[]
+  
+  // Cross-Aggregate Relations
+  appointments          Appointment[]
+  payments              Payment[]
+  
+  @@index([patientId])
+  @@index([dentistId])
+  @@index([status])
+  @@index([priority])
+  @@index([createdAt])
+}
+
+// Case Aggregate - Entity
+model CaseFile {
+  id            String    @id @default(cuid())
+  caseId        String
+  case          Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  
+  // File Properties
+  type          String
+  fileName      String
+  originalName  String
+  fileUrl       String
+  fileSize      Int
+  mimeType      String
+  
+  // Metadata
+  description   String?
+  isPublic      Boolean   @default(false)
+  
+  // Audit
+  uploadedById  String
+  uploadedBy    User      @relation(fields: [uploadedById], references: [id])
+  uploadedAt    DateTime  @default(now())
+  
+  // Processing
+  isProcessed   Boolean   @default(false)
+  processedAt   DateTime?
+  thumbnailUrl  String?
+  
+  // Soft Delete
+  deletedAt     DateTime?
+  
+  @@index([caseId])
+  @@index([type])
+}
+
+// Case Aggregate - Entity
+model CaseNote {
+  id            String       @id @default(cuid())
+  caseId        String
+  case          Case         @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  
+  // Author
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  
+  // Content
+  content       String
+  category      String       @default("GENERAL")
+  
+  // Properties
+  isInternal    Boolean      @default(true)
+  isEdited      Boolean      @default(false)
+  
+  // Relations
+  appointmentId String?
+  appointment   Appointment? @relation(fields: [appointmentId], references: [id])
+  
+  // Attachments
+  attachments   String?      // JSON as String for SQLite
+  
+  // Audit
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  editedAt      DateTime?
+  
+  @@index([caseId])
+  @@index([userId])
+  @@index([category])
+}
+
+// Case Aggregate - Entity
+model CaseActivity {
+  id          String   @id @default(cuid())
+  caseId      String
+  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  
+  // Actor
+  userId      String?
+  user        User?    @relation(fields: [userId], references: [id])
+  
+  // Event
+  action      String
+  details     String?
+  metadata    String?  // JSON as String
+  
+  // Audit
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  
+  @@index([caseId])
+  @@index([action])
+  @@index([createdAt])
+}
+
+// ===========================
+// APPOINTMENT BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: Appointment
+
+model Appointment {
+  id            String       @id @default(cuid())
+  
+  // Aggregate References
+  caseId        String?
+  case          Case?        @relation(fields: [caseId], references: [id])
+  userId        String
+  user          User         @relation("AppointmentUser", fields: [userId], references: [id])
+  patientId     String
+  patient       User         @relation("AppointmentPatient", fields: [patientId], references: [id])
+  clinicId      String?
+  clinic        Clinic?      @relation(fields: [clinicId], references: [id])
+  
+  // Domain Properties
+  type          String       @default("FOLLOW_UP")
+  status        String       @default("SCHEDULED")
+  
+  // Scheduling
+  scheduledAt   DateTime
+  duration      Int          @default(30)
+  endAt         DateTime?
+  
+  // Content
+  reason        String?
+  notes         String?
+  internalNotes String?
+  
+  // Workflow
+  confirmedAt   DateTime?
+  checkedInAt   DateTime?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  cancelledAt   DateTime?
+  noShowAt      DateTime?
+  
+  // Cancellation
+  cancelReason  String?
+  cancelledBy   String?
+  rescheduledFrom String?
+  rescheduledTo String?
+  
+  // Communication
+  reminderSent  Boolean      @default(false)
+  reminderSentAt DateTime?
+  videoCallUrl  String?
+  videoCallId   String?
+  
+  // Audit
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  
+  // Relations
+  caseNotes     CaseNote[]
+  
+  @@index([userId])
+  @@index([patientId])
+  @@index([scheduledAt])
+  @@index([status])
+}
+
+// ===========================
+// CLINIC BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: Clinic
+
+model Clinic {
+  id              String        @id @default(cuid())
+  name            String
+  code            String        @unique
+  
+  // Ownership
+  ownerId         String
+  owner           User          @relation("ClinicOwner", fields: [ownerId], references: [id])
+  
+  // Contact
+  email           String?
+  phone           String?
+  fax             String?
+  website         String?
+  
+  // Location
+  address         String
+  address2        String?
+  city            String
+  state           String
+  zipCode         String
+  country         String        @default("USA")
+  latitude        Float?
+  longitude       Float?
+  
+  // Business
+  taxId           String?
+  licenseNumber   String?
+  operatingHours  String?       // JSON as String
+  holidays        String?       // JSON as String
+  
+  // Features
+  isActive        Boolean       @default(true)
+  acceptsWalkIns  Boolean       @default(false)
+  acceptsInsurance Boolean      @default(true)
+  parkingAvailable Boolean      @default(true)
+  wheelchairAccessible Boolean  @default(true)
+  
+  // Branding
+  logoUrl         String?
+  primaryColor    String?
+  description     String?
+  
+  // Audit
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  // Relations
+  cases           Case[]
+  appointments    Appointment[]
+  
+  @@index([ownerId])
+  @@index([isActive])
+}
+
+// ===========================
+// PAYMENT BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: Payment
+
+model Payment {
+  id              String    @id @default(cuid())
+  
+  // Aggregate References
+  userId          String
+  user            User      @relation(fields: [userId], references: [id])
+  caseId          String
+  case            Case      @relation(fields: [caseId], references: [id])
+  
+  // Transaction
+  amount          Float
+  currency        String    @default("USD")
+  status          String    @default("PENDING")
+  method          String?
+  
+  // Gateway
+  transactionId   String?   @unique
+  referenceNumber String?
+  gateway         String?
+  gatewayResponse String?   // JSON as String
+  
+  // Details
+  description     String?
+  notes           String?
+  invoiceNumber   String?
+  invoiceUrl      String?
+  
+  // Refund
+  isRefundable    Boolean   @default(true)
+  refundedAmount  Float?
+  refundReason    String?
+  refundedAt      DateTime?
+  refundedBy      String?
+  
+  // Processing
+  processedAt     DateTime?
+  failedAt        DateTime?
+  metadata        String?   // JSON as String
+  
+  // Audit
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([caseId])
+  @@index([status])
+}
+
+// ===========================
+// NOTIFICATION BOUNDED CONTEXT
+// ===========================
+// Aggregate Root: Notification
+
+model Notification {
+  id                String    @id @default(cuid())
+  
+  // Recipient
+  userId            String
+  user              User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Content
+  title             String?
+  message           String
+  type              String    @default("INFO")
+  category          String    @default("GENERAL")
+  
+  // Action
+  actionUrl         String?
+  actionLabel       String?
+  
+  // Status
+  isRead            Boolean   @default(false)
+  readAt            DateTime?
+  
+  // Delivery
+  emailSent         Boolean   @default(false)
+  emailSentAt       DateTime?
+  smsSent           Boolean   @default(false)
+  smsSentAt         DateTime?
+  pushSent          Boolean   @default(false)
+  pushSentAt        DateTime?
+  
+  // Context
+  metadata          String?   // JSON as String
+  relatedEntityId   String?
+  relatedEntityType String?
+  
+  // Lifecycle
+  expiresAt         DateTime?
+  createdAt         DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([isRead])
+  @@index([createdAt])
+}
+
+// ===========================
+// SYSTEM BOUNDED CONTEXT
+// ===========================
+// Entities: Log, SystemConfig
+
+model Log {
+  id              String    @id @default(cuid())
+  
+  // Actor
+  userId          String?
+  user            User?     @relation(fields: [userId], references: [id])
+  
+  // Event
+  action          String
+  targetType      String
+  targetId        String?
+  
+  // Details
+  description     String?
+  metadata        String?   // JSON as String
+  
+  // Context
+  ipAddress       String?
+  userAgent       String?
+  requestId       String?
+  
+  // Classification
+  severity        String    @default("INFO")
+  
+  // Error Details
+  errorCode       String?
+  errorMessage    String?
+  errorStack      String?
+  
+  // Audit
+  createdAt       DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([severity])
+  @@index([createdAt])
+}
+
+model SystemConfig {
+  id                    String    @id @default("main")
+  
+  // Security
+  sessionTimeoutMinutes Int       @default(30)
+  maxLoginAttempts      Int       @default(5)
+  passwordMinLength     Int       @default(8)
+  require2FA            Boolean   @default(false)
+  
+  // Business Rules
+  autoArchiveDays       Int       @default(90)
+  appointmentReminderDays Int     @default(2)
+  paymentOverdueDays    Int       @default(30)
+  
+  // File Upload
+  maxFileSize           Int       @default(104857600)
+  allowedFileTypes      String    @default("[\"image/jpeg\", \"image/png\", \"application/pdf\", \"model/stl\"]")
+  
+  // Features
+  maintenanceMode       Boolean   @default(false)
+  registrationOpen      Boolean   @default(true)
+  allowGuestCheckout    Boolean   @default(false)
+  
+  // Email
+  systemEmailFrom       String    @default("noreply@dentalplatform.com")
+  supportEmail          String    @default("support@dentalplatform.com")
+  
+  // Defaults
+  defaultCurrency       String    @default("USD")
+  defaultLanguage       String    @default("en")
+  defaultTimezone       String    @default("America/New_York")
+  
+  // System
+  version               String    @default("1.0.0")
+  lastMaintenanceAt     DateTime?
+  lastBackupAt          DateTime?
+  
+  // Audit
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+}

@@ -1,0 +1,6 @@
+export interface Case {
+  id: string;
+  caseNumber: string;
+  status: string;
+  patientId: string;
+}

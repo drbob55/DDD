@@ -1,0 +1,72 @@
+{
+  "compilerOptions": {
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      // Application Layer - Your Next.js app specific code
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@components/*": ["./src/components/*"],
+      "@hooks/*": ["./src/hooks/*"],
+      "@lib/*": ["./src/lib/*"],
+      "@styles/*": ["./src/styles/*"],
+      
+      // Core package paths
+      "@dental/core": ["../../packages/core/src"],
+      "@dental/core/*": ["../../packages/core/src/*"],
+      
+      // Database package paths
+      "@dental/database": ["../../packages/database/src"],
+      "@dental/database/*": ["../../packages/database/src/*"],
+      
+      // Shared package paths
+      "@dental/shared": ["../../packages/shared/src"],
+      "@dental/shared/*": ["../../packages/shared/src/*"],
+      
+      // Domain Layer - Shared bounded contexts
+      "@domain/user": ["../../packages/shared/src/constants/user.constants"],
+      "@domain/case": ["../../packages/shared/src/constants/case.constants"],
+      "@domain/appointment": ["../../packages/shared/src/constants/appointment.constants"],
+      "@domain/payment": ["../../packages/shared/src/constants/payment.constants"],
+      "@domain/notification": ["../../packages/shared/src/constants/notification.constants"],
+      "@domain/file": ["../../packages/shared/src/constants/file.constants"],
+      "@domain/activity": ["../../packages/shared/src/constants/activity.constants"],
+      "@domain/note": ["../../packages/shared/src/constants/note.constants"],
+      "@domain/system": ["../../packages/shared/src/constants/system.constants"],
+      
+      // Cross-cutting concerns
+      "@shared/business-rules": ["../../packages/shared/src/constants/business-rules.constants"],
+      "@shared/constants": ["../../packages/shared/src/constants/index"]
+    },
+    "baseUrl": ".",
+    "target": "ES2017"
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

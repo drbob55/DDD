@@ -1,159 +1,165 @@
-// src/app/api/users/route.ts
-import { prisma } from "@/lib/prisma";
+// app/api/users/exists/route.ts
+import { repositoryFactory, NotFoundError } from "@dental/database";
 import { NextRequest, NextResponse } from "next/server";
-import { hash } from "bcryptjs";
-import { ROLES, isValidRole, isValidSex } from "@/lib/constants";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
 
-const ADMIN_PIN = process.env.ADMIN_PIN || "123456"; // Set your admin PIN in .env
-
-// GET: List all users (optionally by role)
+// GET method for DentistDashboard
 export async function GET(req: NextRequest) {
   try {
+    // Check if user is authenticated
+    const session = await getServerSession(authOptions);
+    console.log("Session in /api/users/exists GET:", session);
+    
+    if (!session?.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Get email from query params
     const url = new URL(req.url);
-    const role = url.searchParams.get("role");
-    let where: any = {};
-    if (role) where.role = role;
+    const email = url.searchParams.get("email");
+    console.log("Checking email:", email);
+
+    if (!email) {
+      return NextResponse.json({ error: "Email parameter is required" }, { status: 400 });
+    }
+
+    // Get user repository
+    const userRepo = repositoryFactory.createUserRepository();
+
+    try {
+      // Check if user exists with PATIENT role (for case creation)
+      const user = await userRepo.findByEmail(email.toLowerCase().trim());
+      
+      if (user && user.role === 'PATIENT') {
+        console.log("User found:", "Yes");
+        return NextResponse.json({
+          exists: true,
+          id: user.id,
+          userId: user.userId,
+          email: user.email,
+          name: user.name,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          role: user.role,
+          phone: user.phone,
+          sex: user.sex,
+          dateOfBirth: user.dateOfBirth,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      } else {
+        console.log("User found:", "No");
+        return NextResponse.json({
+          exists: false,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        return NextResponse.json({
+          exists: false,
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      }
+      throw error;
+    }
+  } catch (error) {
+    console.error("Error in /api/users/exists GET:", error);
     
-    const users = await prisma.user.findMany({
-      where,
-      select: {
-        id: true,
-        userId: true,  // Add this
-        firstName: true,
-        lastName: true,
-        name: true,
-        email: true,
-        username: true,
-        phone: true,
-        role: true,
-        sex: true,
-        dateOfBirth: true,
-        isVerified: true,  // Changed from confirmed
-        createdAt: true,
+    // Return more detailed error in development
+    const errorMessage = process.env.NODE_ENV === 'development' 
+      ? error instanceof Error ? error.message : 'Unknown error'
+      : 'Internal server error';
+    
+    return NextResponse.json(
+      { 
+        error: errorMessage,
+        details: process.env.NODE_ENV === 'development' ? error : undefined
       },
-      orderBy: { createdAt: "desc" },
-    });
-    
-    return NextResponse.json({ users });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 }
 
-// POST: Create new user (admin only)
+// POST method for page.tsx (login/register flow)
 export async function POST(req: NextRequest) {
   try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      phone,
-      role,
-      username,
-      sex,
-      dateOfBirth,
-      pin, // PIN for admin only
-    } = await req.json();
+    // Parse the request body
+    const body = await req.json();
+    const { identifier } = body;
     
-    // Admin PIN check (required for creating users)
-    if (!pin || pin !== ADMIN_PIN) {
-      return NextResponse.json(
-        { error: "Invalid or missing admin PIN." },
-        { status: 401 }
-      );
+    console.log("Checking identifier:", identifier);
+
+    if (!identifier) {
+      return NextResponse.json({ error: "Identifier is required" }, { status: 400 });
+    }
+
+    // Get user repository
+    const userRepo = repositoryFactory.createUserRepository();
+    let user = null;
+    
+    try {
+      // First try email
+      if (identifier.includes("@")) {
+        user = await userRepo.findByEmail(identifier.toLowerCase().trim());
+      }
+      
+      // If not found by email, try username
+      if (!user) {
+        user = await userRepo.findByUsername(identifier);
+      }
+      
+      // If not found by username, try phone
+      if (!user && /^\+?\d{10,}$/.test(identifier.replace(/\s/g, ""))) {
+        user = await userRepo.findByPhone(identifier.replace(/\s/g, ""));
+      }
+    } catch (error) {
+      if (error instanceof NotFoundError) {
+        // User not found is expected, continue
+        user = null;
+      } else {
+        throw error;
+      }
     }
     
-    // Check for all required fields
-    if (!firstName || !lastName || !email || !password || !role) {
-      return NextResponse.json(
-        { error: "Missing required fields." },
-        { status: 400 }
-      );
-    }
-    
-    if (password.length < 8) {
-      return NextResponse.json(
-        { error: "Password must be at least 8 characters." },
-        { status: 400 }
-      );
-    }
-    
-    if (!isValidRole(role)) {
-      return NextResponse.json(
-        { error: "Invalid role provided." },
-        { status: 400 }
-      );
-    }
-    
-    if (sex && !isValidSex(sex)) {
-      return NextResponse.json(
-        { error: "Invalid sex option provided." },
-        { status: 400 }
-      );
-    }
-    
-    // Ensure email is unique
-    const exists = await prisma.user.findUnique({ where: { email } });
-    if (exists) {
-      return NextResponse.json(
-        { error: "Email already registered." },
-        { status: 400 }
-      );
-    }
-    
-    // Hash password before saving
-    const hashed = await hash(password, 10);
-    
-    // Generate unique 8-digit id (string)
-    let uniqueId = Math.floor(10000000 + Math.random() * 90000000).toString();
-    // Ensure uniqueness
-    while (await prisma.user.findUnique({ where: { id: uniqueId } })) {
-      uniqueId = Math.floor(10000000 + Math.random() * 90000000).toString();
-    }
-    
-    // Generate unique 8-digit userId (string) - separate from id
-    let uniqueUserId = Math.floor(10000000 + Math.random() * 90000000).toString();
-    // Ensure uniqueness
-    while (await prisma.user.findUnique({ where: { userId: uniqueUserId } })) {
-      uniqueUserId = Math.floor(10000000 + Math.random() * 90000000).toString();
-    }
-    
-    const user = await prisma.user.create({
-      data: {
-        id: uniqueId,
-        userId: uniqueUserId,  // Add this field
-        firstName,
-        lastName,
-        name: `${firstName} ${lastName}`,
-        email,
-        password: hashed,
-        phone,
-        role,
-        username: username || null,
-        sex: sex || 'PREFER_NOT_TO_SAY',
-        dateOfBirth: dateOfBirth ? new Date(dateOfBirth) : new Date('2000-01-01'),
-        isVerified: true,  // Admin-created users are auto-verified
-      },
-      select: {
-        id: true,
-        userId: true,
-        firstName: true,
-        lastName: true,
-        name: true,
-        email: true,
-        phone: true,
-        role: true,
-        username: true,
-        sex: true,
-        dateOfBirth: true,
-        isVerified: true,
+    console.log("User found:", user ? "Yes" : "No");
+
+    return NextResponse.json({
+      exists: !!user,
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
       },
     });
     
-    return NextResponse.json({ user });
-  } catch (err: any) {
-    console.error("Error creating user:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (error) {
+    console.error("Error in /api/users/exists POST:", error);
+    
+    return NextResponse.json(
+      { 
+        error: "Internal server error",
+        message: error instanceof Error ? error.message : "Unknown error"
+      },
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   }
 }

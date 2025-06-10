@@ -1,49 +1,76 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+# Production builds
+dist/
+build/
+.next/
+out/
 
-# testing
-/coverage
+# Environment files
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 
-# next.js
-/.next/
-/out/
+# Keep .env.example
+!.env.example
 
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Logs
+logs/
+*.log
 npm-debug.log*
 yarn-debug.log*
-yarn-error.log*
-.pnpm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# OS files
+.DS_Store
+Thumbs.db
 
-# vercel
-.vercel
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
 
-# typescript
-*.tsbuildinfo
+# Testing
+coverage/
+.nyc_output/
+
+# Database
+*.db
+*.sqlite
+prisma/dev.db
+prisma/migrations/dev/
+
+# Temporary files
+tmp/
+temp/
+.cache/
+
+# Turborepo
+.turbo/
+
+# Next.js
+.next/
 next-env.d.ts
 
-# Upload directories
-/public/uploads/*
-!/public/uploads/.gitkeep
+# Uploads (in development)
+uploads/
+public/uploads/
 
-# Keep the directory structure but ignore the files
-/public/uploads/cases/*
-!/public/uploads/cases/.gitkeep
+# Build analysis
+.next/analyze/
+
+# Backup directories (if you want to exclude them from git)
+backup_*/
+
+# Migration workspace (temporary)
+migration_workspace/
+
+# Scripts (optional - remove this line if you want to track scripts)
+# *.sh
